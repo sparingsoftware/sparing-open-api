@@ -1,0 +1,22 @@
+{
+  "name": "sparing-open-api",
+  "version": "1.0.0",
+  "description": "Generate http service based on open api schema",
+  "main": "index.js",
+  "bin": "index.js",
+  "keywords": [
+    "open-api",
+    "swagger",
+    "axios",
+    "typescript",
+    "http",
+    "docs"
+  ],
+  "author": "Panowie Programiści",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "dotenv": "^8.2.0",
+    "swagger-typescript-api": "^4.2.0"
+  }
+}
