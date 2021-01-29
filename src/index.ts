@@ -17,7 +17,7 @@ module.exports = function () {
   const OUTPUT_PATH = path.resolve(process.cwd(), './service/')
   const TEMPLATES_PATH = path.resolve(__dirname, '../templates/')
 
-  generateApi({
+  return generateApi({
     name: OUTPUT_NAME,
     url: process.env.OPEN_API_URL,
     templates: TEMPLATES_PATH
