@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 require('dotenv').config()
 const chalk = require('chalk')
 
@@ -6,7 +5,7 @@ const fs = require('fs')
 const path = require('path')
 const generateApi = require('swagger-typescript-api').generateApi
 
-function main() {
+module.exports = function () {
   if (!process.env.OPEN_API_URL) {
     console.log(
       chalk.yellow('OPEN_API_URL is not defined. Service creation aborted!')
@@ -16,7 +15,7 @@ function main() {
 
   const OUTPUT_NAME = 'index.ts'
   const OUTPUT_PATH = path.resolve(process.cwd(), './service/')
-  const TEMPLATES_PATH = path.resolve(__dirname, './templates/')
+  const TEMPLATES_PATH = path.resolve(__dirname, '../templates/')
 
   generateApi({
     name: OUTPUT_NAME,
@@ -30,5 +29,3 @@ function main() {
     })
   })
 }
-
-main()
