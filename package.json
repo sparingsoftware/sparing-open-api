@@ -1,6 +1,6 @@
 {
   "name": "@sparing-software/sparing-open-api",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Generate http service based on open api schema",
   "main": "index.js",
   "bin": "index.js",
