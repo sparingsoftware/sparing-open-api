@@ -17,6 +17,6 @@
   "dependencies": {
     "chalk": "^4.1.0",
     "dotenv": "^8.2.0",
-    "swagger-typescript-api": "^4.2.0"
+    "swagger-typescript-api": "^7.0.0"
   }
 }
