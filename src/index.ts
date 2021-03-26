@@ -16,11 +16,13 @@ function main() {
 
   const OUTPUT_NAME = '__generated-api.ts'
   const OUTPUT_PATH = path.resolve(process.cwd(), './service/')
+  const TEMPLATES_PATH = path.resolve(__dirname, './templates/')
 
   generateApi({
     name: OUTPUT_NAME,
     url: process.env.OPEN_API_URL,
     httpClientType: 'axios',
+    templates: TEMPLATES_PATH,
     prettier: {
       parser: 'typescript',
       semi: false,
@@ -38,10 +40,7 @@ function main() {
     if (!fs.existsSync(OUTPUT_PATH)) fs.mkdirSync(OUTPUT_PATH)
 
     files.forEach(({ content, name }) => {
-      fs.writeFileSync(
-        `${OUTPUT_PATH}/${name}`,
-        `${content}\nexport const api = new Api()\n`
-      )
+      fs.writeFileSync(`${OUTPUT_PATH}/${name}`, content)
     })
   })
 }
