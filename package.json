@@ -2,8 +2,13 @@
   "name": "@sparing-software/sparing-open-api",
   "version": "3.0.0",
   "description": "Generate http service based on open api schema",
-  "main": "index.js",
-  "bin": "index.js",
+  "bin": "./dist/index.js",
+  "main": "./dist/index.js",
+  "scripts": {
+    "prepublish": "npm run build",
+    "start": "ts-node src/index.ts",
+    "build": "shx rm -rf dist && tsc"
+  },
   "keywords": [
     "open-api",
     "swagger",
@@ -17,6 +22,15 @@
   "dependencies": {
     "chalk": "^4.1.0",
     "dotenv": "^8.2.0",
-    "swagger-typescript-api": "^7.0.0"
-  }
+    "swagger-typescript-api": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^15.0.2",
+    "shx": "^0.3.3",
+    "typescript": "^4.2.4"
+  },
+  "files": [
+    "dist",
+    "templates"
+  ]
 }
