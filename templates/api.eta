@@ -59,5 +59,3 @@ export class Api<SecurityDataType extends unknown><% if (!config.singleHttpClien
     }
 <% }) %>
 }
-
-export const api = new Api()
