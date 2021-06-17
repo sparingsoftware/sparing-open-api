@@ -15,7 +15,7 @@ function main() {
   }
 
   const OUTPUT_NAME = '__generated-api.ts'
-  const OUTPUT_PATH = path.resolve(process.cwd(), './service/')
+  const OUTPUT_PATH = path.resolve(process.cwd(), './src/service/')
   const TEMPLATES_PATH = path.resolve(__dirname, '../templates/')
 
   generateApi({
