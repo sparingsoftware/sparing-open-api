@@ -68,7 +68,7 @@ export class HttpClient<SecurityDataType = unknown> {
         format = "json",
         body,
         ...params
-    }: FullRequestParams): Promise<AxiosResponse<T>> => {
+    }: FullRequestParams): Promise<T> => {
         const secureParams = (secure && this.securityWorker && (await this.securityWorker(this.securityData))) || {};
         const requestParams = this.mergeRequestParams(params, secureParams);
 
@@ -82,6 +82,6 @@ export class HttpClient<SecurityDataType = unknown> {
             responseType: format,
             data: body,
             url: path,
-        });
+        }).then(res => res.data);
     };
 }
