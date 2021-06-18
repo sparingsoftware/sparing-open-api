@@ -34,11 +34,8 @@ const createCustomOperationId = (method, route, moduleName) => {
     : _.camelCase(_.lowerCase(method) + "_" + [moduleName].join("_")) || "index";
 };
 
-if (operationId) {
-  const startsWithModuleName = new RegExp(`^(${moduleName})`);
-  return _.camelCase(operationId.replace(startsWithModuleName, ''));
-}
-
+if (operationId)
+  return _.camelCase(operationId);
 if (route === "/")
   return _.camelCase(`${_.lowerCase(method)}Root`);
 
