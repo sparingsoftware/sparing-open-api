@@ -67,18 +67,27 @@ export class HttpClient<SecurityDataType = unknown> {
     }
 
     private createFormData(input: Record<string, unknown>): FormData {
-      return Object.keys(input || {}).reduce((formData, key) => {
-        const property = input[key];
-        formData.append(
-            key,
-            property instanceof Blob ?
-                property :
-            typeof property === "object" && property !== null ?
-                JSON.stringify(property) :
-            `${property}`
-        );
-        return formData;
-      }, new FormData())
+        function parseProperty(property: unknown) {
+            return property instanceof Blob
+                ? property
+                : typeof property === 'object' && property !== null
+                ? JSON.stringify(property)
+                : `${property}`
+        }
+
+        return Object.keys(input || {}).reduce((formData, key) => {
+            const property = input[key]
+
+            if (Array.isArray(property)) {
+                property.map(parseProperty).forEach(property => {
+                    formData.append(key, property)
+                })
+            } else {
+                formData.append(key, parseProperty(property))
+            }
+
+            return formData
+        }, new FormData())
     }
 
     public request = async <T = any, _E = any>({
