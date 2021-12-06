@@ -41,6 +41,22 @@ import { httpService } from '@/service/http.service'
 const issues = await httpService.projects.getIssues(project.id)
 ```
 
+---
+
+It is also recommended to add `prebuild` and `preserve`/`predev` scripts to your `package.json` file in order to get the newest api on each start:
+
+```json
+{
+  "scripts": {
+    "prebuild": "sparing-open-api",
+    "preserve": "sparing-open-api",
+    ...
+  }
+}
+```
+
+Or you can always do it manually by running `sparing-open-api` from terminal opened inside your project.
+
 ## Contributing
 
 Want to help improve this plugin? Great!  
