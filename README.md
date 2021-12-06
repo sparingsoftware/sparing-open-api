@@ -1,3 +1,9 @@
+## Installation
+
+```
+npm i @sparing-software/sparing-open-api
+```
+
 ## Usage
 
 Set environmental variables
@@ -9,6 +15,30 @@ In order to help webpack automatically map aliases for generated file in Vue/Rea
 
 ```
 OPEN_API_OUT_DIR=./src/service
+```
+
+---
+
+To comfortly use generated service in futher application consider creating another file in `service` folder:
+
+`service/http.service.ts`
+```ts
+import { Api } from './$OPEN_API_OUT_FILENAME'
+
+export const httpService = new Api({
+  baseURL: process.env.VUE_APP_API_URL
+})
+
+httpService.instance.interceptors.request.use(config => {
+  config.headers.Authorization = localStorage.getItem('token')
+  return config
+})
+```
+
+Which can be later easily used as follows:
+```ts
+import { httpService } from '@/service/http.service'
+const issues = await httpService.projects.getIssues(project.id)
 ```
 
 ## Contributing
