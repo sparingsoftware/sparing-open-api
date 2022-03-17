@@ -8,7 +8,7 @@
       return `enum ${contract.name} {\r\n${contract.content} \r\n }`;
     },
     interface: (contract) => {
-      return `interface ${contract.name} {\r\n${contract.content}}`;
+      return `type ${contract.name} = {\r\n${contract.content}}`;
     },
     type: (contract) => {
       return `type ${contract.name} = ${contract.content}`;
