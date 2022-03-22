@@ -38,6 +38,37 @@ function main() {
       useTabs: false,
       quoteProps: 'as-needed',
       tabWidth: 2
+    },
+    hooks: {
+      onCreateRoute: (routeData) => {
+        if (routeData.request.method !== 'get') return routeData
+
+        const type = `FetchKeys<${routeData.responseBodySchema.type}>`
+        routeData.routeParams.query.push({
+          name: 'fetchKeys',
+          required: false,
+          in: 'query',
+          description: 'Keys to fetch from endpoint',
+          schema: { type },
+          type
+        })
+
+        if (routeData.request.query) {
+          const requestQuery = routeData.request.query
+          routeData.request.query = {
+            ...requestQuery,
+            type: requestQuery.type.replace(' }', `, fetchKeys?: T }`)
+          }
+        } else {
+          routeData.request.query = {
+            name: 'query',
+            optional: true,
+            type: `{ fetchKeys?: T }`
+          }
+        }
+
+        return routeData
+      }
     }
   }).then(({ files }) => {
     if (!fs.existsSync(OUTPUT_PATH)) fs.mkdirSync(OUTPUT_PATH)
