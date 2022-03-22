@@ -26,19 +26,19 @@ const descriptionLines = _.compact([
 
 %>
 
-type Flatten<T> = T extends any[] ? T[number] : T;
-type ChangeTypeOfKeys<T extends object, Keys extends keyof T, NewType> = { [key in keyof T]: key extends Keys ? NewType : T[key] };
-type MapObjectKeysToTrue<ObjectType extends Record<PropertyKey, any>> = {
+export type Flatten<T> = T extends any[] ? T[number] : T;
+export type ChangeTypeOfKeys<T extends object, Keys extends keyof T, NewType> = { [key in keyof T]: key extends Keys ? NewType : T[key] };
+export type MapObjectKeysToTrue<ObjectType extends Record<PropertyKey, any>> = {
   [key in keyof ObjectType]?: ObjectType[key] extends Record<PropertyKey, any>
     ? true | MapObjectKeysToTrue<Flatten<ObjectType[key]>>
     : true
 }
-type FetchKeysType = { [key: PropertyKey]: true | FetchKeysType }
-type FetchKeys<ResponseModel> = ResponseModel extends { count?: number, results?: Array<infer DataModel> }
+export type FetchKeysType = { [key: PropertyKey]: true | FetchKeysType }
+export type FetchKeys<ResponseModel> = ResponseModel extends { count?: number, results?: Array<infer DataModel> }
   ? MapObjectKeysToTrue<DataModel>
   : MapObjectKeysToTrue<Flatten<ResponseModel>>;
 
-type NestedSafePick<ResponseModel, FetchKeysType> = ResponseModel extends Array<infer Model>
+export type NestedSafePick<ResponseModel, FetchKeysType> = ResponseModel extends Array<infer Model>
   ? NestedSafePick<Model, FetchKeysType>[]
   : {
       [key in keyof FetchKeysType]: FetchKeysType[key] extends Record<PropertyKey, any>
@@ -54,7 +54,7 @@ type NestedSafePick<ResponseModel, FetchKeysType> = ResponseModel extends Array<
           : never
     };
 
-type PickKeys<ResponseModel, FetchKeysType> = ResponseModel extends {
+export type PickKeys<ResponseModel, FetchKeysType> = ResponseModel extends {
   count?: number
   results?: Array<infer DataModel>
 }
