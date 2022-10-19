@@ -35,8 +35,12 @@ type MapObjectKeysToTrue<ObjectType extends Record<PropertyKey, any>> = {
 }
 type FetchKeysType = { [key: PropertyKey]: true | FetchKeysType }
 type FetchKeys<ResponseModel> = ResponseModel extends { count?: number, results?: Array<infer DataModel> }
-  ? MapObjectKeysToTrue<DataModel>
-  : MapObjectKeysToTrue<Flatten<ResponseModel>>;
+  ? DataModel extends Record<PropertyKey, any>
+    ? MapObjectKeysToTrue<DataModel>
+    : DataModel
+  : ResponseModel extends Record<PropertyKey, any>
+  ? MapObjectKeysToTrue<Flatten<ResponseModel>>
+  : ResponseModel;
 
 type NestedSafePick<ResponseModel, FetchKeysType> = ResponseModel extends Array<infer Model>
   ? NestedSafePick<Model, FetchKeysType>[]
