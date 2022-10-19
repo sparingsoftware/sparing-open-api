@@ -67,6 +67,8 @@ type PickKeys<ResponseModel, FetchKeysType> = ResponseModel extends {
       'results',
       NestedSafePick<DataModel, FetchKeysType>[]
     >
+  : {} extends FetchKeysType
+  ? ResponseModel
   : ResponseModel extends Array<infer DataModel>
   ? NestedSafePick<DataModel, FetchKeysType>[]
   : NestedSafePick<ResponseModel, FetchKeysType>
