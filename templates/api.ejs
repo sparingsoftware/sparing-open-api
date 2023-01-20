@@ -62,16 +62,14 @@ type PickKeys<ResponseModel, FetchKeysType> = ResponseModel extends {
   count?: number
   results?: Array<infer DataModel>
 }
-  ? ChangeTypeOfKeys<
-      ResponseModel,
-      'results',
-      NestedSafePick<DataModel, FetchKeysType>[]
+  ? {} extends FetchKeysType ? ResponseModel : ChangeTypeOfKeys<
+    ResponseModel,
+    'results',
+    NestedSafePick<DataModel, FetchKeysType>[]
     >
-  : {} extends FetchKeysType
-  ? ResponseModel
   : ResponseModel extends Array<infer DataModel>
-  ? NestedSafePick<DataModel, FetchKeysType>[]
-  : NestedSafePick<ResponseModel, FetchKeysType>
+    ? NestedSafePick<DataModel, FetchKeysType>[]
+    : NestedSafePick<ResponseModel, FetchKeysType>
 
 function postprocessQuery(query?: any) {
   if (!query) return query
@@ -105,7 +103,6 @@ function postprocessQuery(query?: any) {
 /**
 <% descriptionLines.forEach((descriptionLine) => { %>
 * <%~ descriptionLine %>
-
 <% }) %>
 */
 <% } %>
