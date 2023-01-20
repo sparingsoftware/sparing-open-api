@@ -58,18 +58,20 @@ type NestedSafePick<ResponseModel, FetchKeysType> = ResponseModel extends Array<
           : never
     };
 
-type PickKeys<ResponseModel, FetchKeysType> = ResponseModel extends {
-  count?: number
-  results?: Array<infer DataModel>
-}
-  ? {} extends FetchKeysType ? ResponseModel : ChangeTypeOfKeys<
-    ResponseModel,
-    'results',
-    NestedSafePick<DataModel, FetchKeysType>[]
-    >
-  : ResponseModel extends Array<infer DataModel>
-    ? NestedSafePick<DataModel, FetchKeysType>[]
-    : NestedSafePick<ResponseModel, FetchKeysType>
+type PickKeys<ResponseModel, FetchKeysType> = {} extends FetchKeysType
+  ? ResponseModel
+  : ResponseModel extends {
+    count?: number
+    results?: Array<infer DataModel>
+  }
+    ? ChangeTypeOfKeys<
+        ResponseModel,
+        'results',
+        NestedSafePick<DataModel, FetchKeysType>[]
+      >
+    : ResponseModel extends Array<infer DataModel>
+      ? NestedSafePick<DataModel, FetchKeysType>[]
+      : NestedSafePick<ResponseModel, FetchKeysType>
 
 function postprocessQuery(query?: any) {
   if (!query) return query
