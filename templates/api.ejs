@@ -33,10 +33,14 @@ type MapObjectKeysToTrue<ObjectType extends Record<PropertyKey, any>> = {
     ? true | MapObjectKeysToTrue<Flatten<ObjectType[key]>>
     : true
 }
-type FetchKeysType = { [key: PropertyKey]: true | FetchKeysType }
+type FetchKeysType = { [key in PropertyKey]: true | FetchKeysType }
 type FetchKeys<ResponseModel> = ResponseModel extends { count?: number, results?: Array<infer DataModel> }
-  ? MapObjectKeysToTrue<DataModel>
-  : MapObjectKeysToTrue<Flatten<ResponseModel>>;
+  ? DataModel extends Record<PropertyKey, any>
+    ? MapObjectKeysToTrue<DataModel>
+    : DataModel
+  : ResponseModel extends Record<PropertyKey, any>
+  ? MapObjectKeysToTrue<Flatten<ResponseModel>>
+  : ResponseModel;
 
 type NestedSafePick<ResponseModel, FetchKeysType> = ResponseModel extends Array<infer Model>
   ? NestedSafePick<Model, FetchKeysType>[]
@@ -58,14 +62,14 @@ type PickKeys<ResponseModel, FetchKeysType> = ResponseModel extends {
   count?: number
   results?: Array<infer DataModel>
 }
-  ? ChangeTypeOfKeys<
-      ResponseModel,
-      'results',
-      NestedSafePick<DataModel, FetchKeysType>[]
+  ? {} extends FetchKeysType ? ResponseModel : ChangeTypeOfKeys<
+    ResponseModel,
+    'results',
+    NestedSafePick<DataModel, FetchKeysType>[]
     >
   : ResponseModel extends Array<infer DataModel>
-  ? NestedSafePick<DataModel, FetchKeysType>[]
-  : NestedSafePick<ResponseModel, FetchKeysType>
+    ? NestedSafePick<DataModel, FetchKeysType>[]
+    : NestedSafePick<ResponseModel, FetchKeysType>
 
 function postprocessQuery(query?: any) {
   if (!query) return query
@@ -99,29 +103,27 @@ function postprocessQuery(query?: any) {
 /**
 <% descriptionLines.forEach((descriptionLine) => { %>
 * <%~ descriptionLine %>
-
 <% }) %>
 */
 <% } %>
-export class Api<SecurityDataType extends unknown><% if (!config.singleHttpClient) { %> extends HttpClient<SecurityDataType> <% } %> {
+export class <%~ config.apiClassName %><SecurityDataType extends unknown><% if (!config.singleHttpClient) { %> extends HttpClient<SecurityDataType> <% } %> {
 
 <% if(config.singleHttpClient) { %>
-  constructor (private http: HttpClient<SecurityDataType>) {}
+  http: HttpClient<SecurityDataType>;
+  constructor (http: HttpClient<SecurityDataType>) {
+    this.http = http;
+  }
 <% } %>
 
 
 <% routes.outOfModule && routes.outOfModule.forEach((route) => { %>
-
-        <%~ includeFile('./procedure-call.eta', { ...it, route }) %>
-
+        <%~ includeFile('./procedure-call.ejs', { ...it, route }) %>
 <% }) %>
 
 <% routes.combined && routes.combined.forEach(({ routes = [], moduleName }) => { %>
     <%~ moduleName %> = {
     <% routes.forEach((route) => { %>
-
-        <%~ includeFile('./procedure-call.eta', { ...it, route }) %>
-
+        <%~ includeFile('./procedure-call.ejs', { ...it, route }) %>
     <% }) %>
     }
 <% }) %>

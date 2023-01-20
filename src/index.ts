@@ -5,6 +5,7 @@ const chalk = require('chalk')
 const fs = require('fs')
 const path = require('path')
 const { generateApi } = require('swagger-typescript-api')
+const prettierConfig = require('@sparing-software/prettier-config')
 
 function main() {
   if (!process.env.OPEN_API_URL) {
@@ -28,17 +29,9 @@ function main() {
     templates: TEMPLATES_PATH,
     prettier: {
       parser: 'typescript',
-      semi: false,
-      arrowParens: 'avoid',
-      trailingComma: 'none',
-      singleQuote: true,
-      endOfLine: 'lf',
-      bracketSpacing: true,
-      printWidth: 80,
-      useTabs: false,
-      quoteProps: 'as-needed',
-      tabWidth: 2
+      ...prettierConfig,
     },
+    unwrapResponseData: true,
     hooks: {
       onCreateRoute: (routeData) => {
         if (routeData.request.method !== 'get') return routeData
@@ -57,7 +50,7 @@ function main() {
           const requestQuery = routeData.request.query
           routeData.request.query = {
             ...requestQuery,
-            type: requestQuery.type.replace(' }', `, fetchKeys?: T }`)
+            type: requestQuery.type.slice(0, - 1) + 'fetchKeys?: T }'
           }
         } else {
           routeData.request.query = {
