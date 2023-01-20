@@ -39,6 +39,7 @@ function main() {
       quoteProps: 'as-needed',
       tabWidth: 2
     },
+    unwrapResponseData: true,
     hooks: {
       onCreateRoute: (routeData) => {
         if (routeData.request.method !== 'get') return routeData
@@ -57,7 +58,7 @@ function main() {
           const requestQuery = routeData.request.query
           routeData.request.query = {
             ...requestQuery,
-            type: requestQuery.type.replace(' }', `, fetchKeys?: T }`)
+            type: requestQuery.type.slice(0, - 1) + 'fetchKeys?: T }'
           }
         } else {
           routeData.request.query = {
