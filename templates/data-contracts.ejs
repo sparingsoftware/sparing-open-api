@@ -1,44 +1,29 @@
 <%
-const { modelTypes, utils } = it;
-const { formatDescription, require, _ } = utils;
+const { modelTypes, utils, config } = it;
+const { formatDescription, require, _, Ts } = utils;
 
 
 const dataContractTemplates = {
-    enum: (contract) => {
-        return `enum ${contract.name} {\r\n${contract.content} \r\n }`;
-    },
-    interface: (contract) => {
-        return `type ${contract.name} = {\r\n${contract.content || null}}`;
-    },
-    type: (contract) => {
-        return `type ${contract.name} = ${contract.content || null}`;
-    },
-}
-
-const createDescription = (contract) => {
-    if (!contract.typeData) return _.compact([contract.description]);
-
-    return _.compact([
-        contract.description && formatDescription(contract.description),
-        !_.isUndefined(contract.typeData.format) && `@format ${contract.typeData.format}`,
-        !_.isUndefined(contract.typeData.minimum) && `@min ${contract.typeData.minimum}`,
-        !_.isUndefined(contract.typeData.maximum) && `@max ${contract.typeData.maximum}`,
-        !_.isUndefined(contract.typeData.pattern) && `@pattern ${contract.typeData.pattern}`,
-        !_.isUndefined(contract.typeData.example) && `@example ${
-                _.isObject(contract.typeData.example) ? JSON.stringify(contract.typeData.example) : contract.typeData.example
-        }`,
-    ]);
+  enum: (contract) => {
+    return `enum ${contract.name} {\r\n${contract.content} \r\n }`;
+  },
+  // Force all interfaces to type
+  interface: (contract) => {
+    return `type ${contract.name} = {\r\n ${contract.content || null} \r\n}`;
+  },
+  type: (contract) => {
+    return `type ${contract.name} = ${contract.content || null}`;
+  },
 }
 %>
-<% modelTypes.forEach((contract) => { %>
-<% const description = createDescription(contract); %>
-<% if (description.length) { %>
-/**
-<%~ description.map(part => `* ${part}`).join("\n") %>
 
-*/
+<% if (config.internalTemplateOptions.addUtilRequiredKeysType) { %>
+type <%~ config.Ts.CodeGenKeyword.UtilRequiredKeys %><T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>
 <% } %>
-export <%~ (dataContractTemplates[contract.typeIdentifier] || dataContractTemplates.type)(contract) %>
+
+<% modelTypes.forEach((contract) => { %>
+  <%~ includeFile('@base/data-contract-jsdoc.ejs', { ...it, data: { ...contract, ...contract.typeData } }) %>
+  export <%~ (dataContractTemplates[contract.typeIdentifier] || dataContractTemplates.type)(contract) %>
 
 
 <% }) %>
