@@ -8,10 +8,10 @@ const dataContractTemplates = {
         return `enum ${contract.name} {\r\n${contract.content} \r\n }`;
     },
     interface: (contract) => {
-        return `type ${contract.name} = {\r\n${contract.content}}`;
+        return `type ${contract.name} = {\r\n${contract.content || null}}`;
     },
     type: (contract) => {
-        return `type ${contract.name} = ${contract.content}`;
+        return `type ${contract.name} = ${contract.content || null}`;
     },
 }
 
