@@ -31,6 +31,7 @@ function main() {
       parser: 'typescript',
       ...prettierConfig,
     },
+    generateUnionEnums: true,
     unwrapResponseData: true,
     hooks: {
       onCreateRoute: (routeData) => {
