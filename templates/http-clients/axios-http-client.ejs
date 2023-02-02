@@ -56,14 +56,11 @@ export class HttpClient<SecurityDataType = unknown> {
     }
 
     protected mergeRequestParams(params1: AxiosRequestConfig, params2?: AxiosRequestConfig): AxiosRequestConfig {
-      const method = params1.method || (params2 && params2.method)
-
       return {
         ...this.instance.defaults,
         ...params1,
         ...(params2 || {}),
         headers: {
-          ...((method && this.instance.defaults.headers[method.toLowerCase() as keyof HeadersDefaults]) || {}),
           ...(params1.headers || {}),
           ...((params2 && params2.headers) || {}),
         },
