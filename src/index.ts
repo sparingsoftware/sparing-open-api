@@ -70,6 +70,8 @@ function main() {
     files.forEach(({ content, name }) => {
       fs.writeFileSync(`${OUTPUT_PATH}/${name}`, content)
     })
+
+    process.exit(0)
   })
 }
 
