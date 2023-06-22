@@ -28,11 +28,13 @@ const descriptionLines = _.compact([
 
 export type Flatten<T> = T extends any[] ? T[number] : T;
 export type ChangeTypeOfKeys<T extends object, Keys extends keyof T, NewType> = { [key in keyof T]: key extends Keys ? NewType : T[key] };
-export type MapObjectKeysToTrue<ObjectType extends Record<PropertyKey, any>> = {
+export type MapObjectKeysToTrue<ObjectType> = ObjectType extends Record<PropertyKey, any> 
+? {
   [key in keyof ObjectType]?: ObjectType[key] extends Record<PropertyKey, any>
     ? true | MapObjectKeysToTrue<Flatten<ObjectType[key]>>
     : true
-}
+  }
+: true
 export type FetchKeysType = { [key: PropertyKey]: true | FetchKeysType }
 export type FetchKeys<ResponseModel> = ResponseModel extends { count?: number, results?: Array<infer DataModel> }
   ? MapObjectKeysToTrue<DataModel>
@@ -54,18 +56,21 @@ export type NestedSafePick<ResponseModel, FetchKeysType> = ResponseModel extends
           : never
     };
 
-export type PickKeys<ResponseModel, FetchKeysType> = ResponseModel extends {
-  count?: number
-  results?: Array<infer DataModel>
-}
-  ? ChangeTypeOfKeys<
-      ResponseModel,
-      'results',
-      NestedSafePick<DataModel, FetchKeysType>[]
-    >
-  : ResponseModel extends Array<infer DataModel>
-  ? NestedSafePick<DataModel, FetchKeysType>[]
-  : NestedSafePick<ResponseModel, FetchKeysType>
+export type PickKeys<ResponseModel, FetchKeysType> = 
+  FetchKeysType extends Record<string, never>
+    ? ResponseModel
+    : ResponseModel extends {
+        count?: number
+        results?: Array<infer DataModel>
+      }
+        ? ChangeTypeOfKeys<
+            ResponseModel,
+            'results',
+            NestedSafePick<DataModel, FetchKeysType>[]
+          >
+        : ResponseModel extends Array<infer DataModel>
+          ? NestedSafePick<DataModel, FetchKeysType>[]
+          : NestedSafePick<ResponseModel, FetchKeysType>
 
 function postprocessQuery(query?: any) {
   if (!query) return query

@@ -40,10 +40,17 @@ function main() {
       tabWidth: 2
     },
     hooks: {
-      onCreateRoute: (routeData) => {
+      onCreateRoute: routeData => {
         if (routeData.request.method !== 'get') return routeData
 
-        const type = `FetchKeys<${routeData.responseBodySchema.type}>`
+        const type =
+          `FetchKeys<${routeData.responseBodySchema.type}> =` +
+            routeData.responseBodySchema.type ===
+            'void' ||
+          routeData.responseBodySchema.type === 'Record<string, any>'
+            ? 'true'
+            : '{}'
+
         routeData.routeParams.query.push({
           name: 'fetchKeys',
           required: false,
