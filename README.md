@@ -7,6 +7,7 @@ npm i @sparing-software/sparing-open-api
 ## Usage
 
 Set environmental variables
+
 - `OPEN_API_URL` (required) - http address of JSON OpenAPI schema to your API
 - `OPEN_API_OUT_DIR` (default: `./service`) - output directory for generated http service
 - `OPEN_API_OUT_FILENAME` (default: `__generated-api.ts`) - output filename (filename must be with .ts extension)
@@ -22,6 +23,7 @@ OPEN_API_OUT_DIR=./src/service
 To comfortly use generated service in futher application consider creating another file in `service` folder:
 
 `service/http.service.ts`
+
 ```ts
 import { Api } from './$OPEN_API_OUT_FILENAME'
 
@@ -36,6 +38,7 @@ httpService.instance.interceptors.request.use(config => {
 ```
 
 Which can be later easily used as follows:
+
 ```ts
 import { httpService } from '@/service/http.service'
 const issues = await httpService.projects.getIssues(project.id)
@@ -61,6 +64,10 @@ Or you can always do it manually by running `sparing-open-api` from terminal ope
 
 Want to help improve this plugin? Great!  
 Project is open-source so fork repo and join us!
+
+## Releasing and versioning
+
+Use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) to automatically bump major, minor and patch versions. Read more about semantic releasing in this [docs](https://semantic-release.gitbook.io/semantic-release/recipes/release-workflow).
 
 ## License
 
