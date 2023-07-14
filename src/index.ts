@@ -5,6 +5,7 @@ const chalk = require('chalk')
 const fs = require('fs')
 const path = require('path')
 const { generateApi } = require('swagger-typescript-api')
+const prettierConfig = require('@sparing-software/prettier-config')
 
 function main() {
   if (!process.env.OPEN_API_URL) {
@@ -28,28 +29,15 @@ function main() {
     templates: TEMPLATES_PATH,
     prettier: {
       parser: 'typescript',
-      semi: false,
-      arrowParens: 'avoid',
-      trailingComma: 'none',
-      singleQuote: true,
-      endOfLine: 'lf',
-      bracketSpacing: true,
-      printWidth: 80,
-      useTabs: false,
-      quoteProps: 'as-needed',
-      tabWidth: 2
+      ...prettierConfig
     },
+    generateUnionEnums: true,
+    unwrapResponseData: true,
     hooks: {
       onCreateRoute: routeData => {
         if (routeData.request.method !== 'get') return routeData
 
-        const type =
-          `FetchKeys<${routeData.responseBodySchema.type}> =` +
-            routeData.responseBodySchema.type ===
-            'void' ||
-          routeData.responseBodySchema.type === 'Record<string, any>'
-            ? 'true'
-            : '{}'
+        const type = `FetchKeys<${routeData.responseBodySchema.type}>`
 
         routeData.routeParams.query.push({
           name: 'fetchKeys',
@@ -64,7 +52,7 @@ function main() {
           const requestQuery = routeData.request.query
           routeData.request.query = {
             ...requestQuery,
-            type: requestQuery.type.replace(' }', `, fetchKeys?: T }`)
+            type: requestQuery.type.slice(0, -1) + 'fetchKeys?: T }'
           }
         } else {
           routeData.request.query = {
@@ -83,6 +71,8 @@ function main() {
     files.forEach(({ content, name }) => {
       fs.writeFileSync(`${OUTPUT_PATH}/${name}`, content)
     })
+
+    process.exit(0)
   })
 }
 

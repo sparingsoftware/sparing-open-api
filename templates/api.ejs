@@ -26,21 +26,23 @@ const descriptionLines = _.compact([
 
 %>
 
-export type Flatten<T> = T extends any[] ? T[number] : T;
-export type ChangeTypeOfKeys<T extends object, Keys extends keyof T, NewType> = { [key in keyof T]: key extends Keys ? NewType : T[key] };
-export type MapObjectKeysToTrue<ObjectType> = ObjectType extends Record<PropertyKey, any> 
-? {
+type Flatten<T> = T extends any[] ? T[number] : T;
+type ChangeTypeOfKeys<T extends object, Keys extends keyof T, NewType> = { [key in keyof T]: key extends Keys ? NewType : T[key] };
+type MapObjectKeysToTrue<ObjectType extends Record<PropertyKey, any>> = {
   [key in keyof ObjectType]?: ObjectType[key] extends Record<PropertyKey, any>
     ? true | MapObjectKeysToTrue<Flatten<ObjectType[key]>>
     : true
-  }
-: true
-export type FetchKeysType = { [key: PropertyKey]: true | FetchKeysType }
-export type FetchKeys<ResponseModel> = ResponseModel extends { count?: number, results?: Array<infer DataModel> }
-  ? MapObjectKeysToTrue<DataModel>
-  : MapObjectKeysToTrue<Flatten<ResponseModel>>;
+}
+type FetchKeysType = { [key in PropertyKey]: true | FetchKeysType }
+type FetchKeys<ResponseModel> = ResponseModel extends { count?: number, results?: Array<infer DataModel> }
+  ? DataModel extends Record<PropertyKey, any>
+    ? MapObjectKeysToTrue<DataModel>
+    : DataModel
+  : ResponseModel extends Record<PropertyKey, any>
+  ? MapObjectKeysToTrue<Flatten<ResponseModel>>
+  : ResponseModel;
 
-export type NestedSafePick<ResponseModel, FetchKeysType> = ResponseModel extends Array<infer Model>
+type NestedSafePick<ResponseModel, FetchKeysType> = ResponseModel extends Array<infer Model>
   ? NestedSafePick<Model, FetchKeysType>[]
   : {
       [key in keyof FetchKeysType]: FetchKeysType[key] extends Record<PropertyKey, any>
@@ -56,21 +58,20 @@ export type NestedSafePick<ResponseModel, FetchKeysType> = ResponseModel extends
           : never
     };
 
-export type PickKeys<ResponseModel, FetchKeysType> = 
-  FetchKeysType extends Record<string, never>
-    ? ResponseModel
-    : ResponseModel extends {
-        count?: number
-        results?: Array<infer DataModel>
-      }
-        ? ChangeTypeOfKeys<
-            ResponseModel,
-            'results',
-            NestedSafePick<DataModel, FetchKeysType>[]
-          >
-        : ResponseModel extends Array<infer DataModel>
-          ? NestedSafePick<DataModel, FetchKeysType>[]
-          : NestedSafePick<ResponseModel, FetchKeysType>
+type PickKeys<ResponseModel, FetchKeysType> = {} extends FetchKeysType
+  ? ResponseModel
+  : ResponseModel extends {
+    count?: number
+    results?: Array<infer DataModel>
+  }
+    ? ChangeTypeOfKeys<
+        ResponseModel,
+        'results',
+        NestedSafePick<DataModel, FetchKeysType>[]
+      >
+    : ResponseModel extends Array<infer DataModel>
+      ? NestedSafePick<DataModel, FetchKeysType>[]
+      : NestedSafePick<ResponseModel, FetchKeysType>
 
 function postprocessQuery(query?: any) {
   if (!query) return query
@@ -104,29 +105,27 @@ function postprocessQuery(query?: any) {
 /**
 <% descriptionLines.forEach((descriptionLine) => { %>
 * <%~ descriptionLine %>
-
 <% }) %>
 */
 <% } %>
-export class Api<SecurityDataType extends unknown><% if (!config.singleHttpClient) { %> extends HttpClient<SecurityDataType> <% } %> {
+export class <%~ config.apiClassName %><SecurityDataType extends unknown><% if (!config.singleHttpClient) { %> extends HttpClient<SecurityDataType> <% } %> {
 
 <% if(config.singleHttpClient) { %>
-  constructor (private http: HttpClient<SecurityDataType>) {}
+  http: HttpClient<SecurityDataType>;
+  constructor (http: HttpClient<SecurityDataType>) {
+    this.http = http;
+  }
 <% } %>
 
 
 <% routes.outOfModule && routes.outOfModule.forEach((route) => { %>
-
-        <%~ includeFile('./procedure-call.eta', { ...it, route }) %>
-
+        <%~ includeFile('./procedure-call.ejs', { ...it, route }) %>
 <% }) %>
 
 <% routes.combined && routes.combined.forEach(({ routes = [], moduleName }) => { %>
     <%~ moduleName %> = {
     <% routes.forEach((route) => { %>
-
-        <%~ includeFile('./procedure-call.eta', { ...it, route }) %>
-
+        <%~ includeFile('./procedure-call.ejs', { ...it, route }) %>
     <% }) %>
     }
 <% }) %>

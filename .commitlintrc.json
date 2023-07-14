@@ -1,0 +1,3 @@
+{
+  "extends": ["@sparing-software/commitlint-config"]
+}

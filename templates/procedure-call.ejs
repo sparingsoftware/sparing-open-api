@@ -86,7 +86,7 @@ const describeReturnType = () => {
 <%~ routeDocs.lines %>
 
 */
-<%~ route.routeName.usage %><%~ route.namespace ? `: <T extends FetchKeys<${type}> = ${type === 'void' || type === 'Record<string, any>' ? 'true' : '{}'}>` : ' = ' %>(<%~ wrapperArgs %>)<%~ config.toJS ? `: ${describeReturnType()}` : "" %> =>
+<%~ route.routeName.usage %><%~ route.namespace ? `: <T extends FetchKeys<${type}>>` : ' = ' %>(<%~ wrapperArgs %>)<%~ config.toJS ? `: ${describeReturnType()}` : "" %> =>
 <%~ config.singleHttpClient ? 'this.http.request' : 'this.request' %><PickKeys<<%~ type %>, T>, <%~ errorType %>>({
 path: `<%~ path %>`,
 method: '<%~ _.upperCase(method) %>',
