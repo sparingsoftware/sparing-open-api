@@ -6,6 +6,8 @@ const path = require('path')
 const { generateApi } = require('swagger-typescript-api')
 const prettierConfig = require('@sparing-software/prettier-config')
 
+import { default as optimizeTypesUtil } from './optimizeTypes'
+
 export type Config = {
   /**
    * Http address of JSON OpenAPI schema to your API
@@ -37,6 +39,18 @@ export type Config = {
    * @example ['/users'] // all paths starting with /users
    */
   include?: string[]
+  /**
+   * Removes all type exports that have no references in endpoints (can slow down api generation)
+   * @default true
+   */
+  optimizeTypes?: boolean
+  /**
+   * List of types unaffected by optimizeTypes
+   *
+   * Helpful when you need an exported type that isn't referenced in any endpoint
+   * @example ['WidgetResourcetypeEnum']
+   */
+  typeWhitelist?: string[]
 }
 
 function main() {
@@ -56,7 +70,9 @@ function main() {
     outDir = './service/',
     outFilename = '__generated-api.ts',
     exclude = [],
-    include = []
+    include = [],
+    optimizeTypes = true,
+    typeWhitelist = []
   } = require(CONFIG_PATH) as Config
 
   if (!url) {
@@ -121,7 +137,13 @@ function main() {
       fs.mkdirSync(OUTPUT_PATH, { recursive: true })
 
     files.forEach(({ content, name }) => {
-      fs.writeFileSync(`${OUTPUT_PATH}/${name}`, content)
+      const fullPath = `${OUTPUT_PATH}/${name}`
+      fs.writeFileSync(fullPath, content)
+
+      if (optimizeTypes) {
+        console.log('🤏   optimizing types')
+        optimizeTypesUtil(fullPath, typeWhitelist)
+      }
     })
 
     process.exit(0)
