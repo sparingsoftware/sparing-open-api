@@ -4,10 +4,8 @@
     "rootDir": "src",
     "module": "commonjs",
     "target": "es5",
-    "sourceMap": true
+    "sourceMap": true,
+    "declaration": true
   },
-  "exclude": [
-    "node_modules",
-    "templates"
-  ]
+  "exclude": ["node_modules", "templates"]
 }
