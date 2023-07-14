@@ -140,19 +140,19 @@ function main() {
         return routeData
       }
     }
-  }).then(({ files }) => {
+  }).then(async ({ files }) => {
     if (!fs.existsSync(OUTPUT_PATH))
       fs.mkdirSync(OUTPUT_PATH, { recursive: true })
 
-    files.forEach(({ content, name }) => {
-      const fullPath = `${OUTPUT_PATH}/${name}`
-      fs.writeFileSync(fullPath, content)
+    const [{ content, name }] = files
+    const fullPath = `${OUTPUT_PATH}/${name}`
 
-      if (optimizeTypes) {
-        console.log('🤏   optimizing types')
-        optimizeTypesUtil(fullPath, typeWhitelist)
-      }
-    })
+    fs.writeFileSync(fullPath, content)
+
+    if (optimizeTypes) {
+      console.log('🤏   optimizing types')
+      await optimizeTypesUtil(fullPath, typeWhitelist)
+    }
 
     process.exit(0)
   })

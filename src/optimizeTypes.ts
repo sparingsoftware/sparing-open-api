@@ -1,6 +1,6 @@
 import { Project } from 'ts-morph'
 
-const optimizeTypes = (path: string, whitelist: string[]) => {
+const optimizeTypes = async (path: string, whitelist: string[]) => {
   const project = new Project()
   const file = project.addSourceFileAtPath(path)
 
@@ -27,7 +27,7 @@ const optimizeTypes = (path: string, whitelist: string[]) => {
 
   removeUnusedTypes()
 
-  project.save()
+  await project.save()
 }
 
 export default optimizeTypes
