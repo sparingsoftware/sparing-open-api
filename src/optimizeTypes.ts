@@ -1,7 +1,7 @@
-const ts = require('ts-morph')
+import { Project } from 'ts-morph'
 
 const optimizeTypes = (path: string, whitelist: string[]) => {
-  const project = new ts.Project()
+  const project = new Project()
   const file = project.addSourceFileAtPath(path)
 
   let prevTextLength = 0

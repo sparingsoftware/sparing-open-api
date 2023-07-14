@@ -1,10 +1,9 @@
 #!/usr/bin/env node
-const chalk = require('chalk')
-
-const fs = require('fs')
-const path = require('path')
-const { generateApi } = require('swagger-typescript-api')
-const prettierConfig = require('@sparing-software/prettier-config')
+import chalk from 'chalk'
+import fs from 'fs'
+import path from 'path'
+import { generateApi } from 'swagger-typescript-api'
+import prettierConfig from '@sparing-software/prettier-config'
 
 import { default as optimizeTypesUtil } from './optimizeTypes'
 
@@ -98,10 +97,19 @@ function main() {
     },
     generateUnionEnums: true,
     unwrapResponseData: true,
+    // @ts-ignore
     exclude,
+    // @ts-ignore
     include,
     hooks: {
-      onCreateRoute: routeData => {
+      onCreateRoute: data => {
+        // TODO Simplify types
+        const routeData = data as typeof data & {
+          responseBodySchema: { type: string }
+          routeParams: { query: object[] }
+          request: { query: { type: string; name: string; optional: boolean } }
+        }
+
         if (routeData.request.method !== 'get') return routeData
 
         const type = `FetchKeys<${routeData.responseBodySchema.type}>`
