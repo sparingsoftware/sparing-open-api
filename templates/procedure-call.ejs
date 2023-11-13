@@ -78,6 +78,7 @@ const describeReturnType = () => {
 }
 
 %>
+<% if(!config.exclude.some(excluded => path.startsWith(excluded)) || config.include.some(excluded => path.startsWith(excluded))){ %>
 /**
 <%~ routeDocs.description %>
 
@@ -97,3 +98,4 @@ method: '<%~ _.upperCase(method) %>',
 <%~ responseFormatTmpl ? `format: ${responseFormatTmpl},` : '' %>
 ...<%~ _.get(requestConfigParam, "name") %>,
 })<%~ route.namespace ? ',' : '' %>
+<% } %>

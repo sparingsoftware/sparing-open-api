@@ -1,30 +1,94 @@
 #!/usr/bin/env node
-require('dotenv').config()
-const chalk = require('chalk')
+import chalk from 'chalk'
+import fs from 'fs'
+import path from 'path'
+import { generateApi } from 'swagger-typescript-api'
+import prettierConfig from '@sparing-software/prettier-config'
 
-const fs = require('fs')
-const path = require('path')
-const { generateApi } = require('swagger-typescript-api')
-const prettierConfig = require('@sparing-software/prettier-config')
+import { default as optimizeTypesUtil } from './optimizeTypes'
+
+export type Config = {
+  /**
+   * Http address of JSON OpenAPI schema to your API
+   * @required
+   */
+  url?: string
+  /**
+   * Output directory for generated http service
+   *
+   * In order to help webpack automatically map aliases for generated file in Vue/React projects please use the following config: './src/service'
+   * @default './service'
+   */
+  outDir?: string
+  /**
+   * Output filename (filename must be with .ts extension)
+   * @default '__generated-api.ts'
+   */
+  outFilename?: string
+  /**
+   * List of paths to be excluded from generated api
+   * @example ['/users'] // all paths starting with /users
+   * @example [''] // all paths
+   */
+  exclude?: string[]
+  /**
+   * List of paths to be included in the generated api, takes priority over excluded paths
+   *
+   * Helpful when you need to exclude all but a few paths
+   * @example ['/users'] // all paths starting with /users
+   */
+  include?: string[]
+  /**
+   * Removes all type exports that have no references in endpoints (can slow down api generation)
+   * @default true
+   */
+  optimizeTypes?: boolean
+  /**
+   * List of types unaffected by optimizeTypes
+   *
+   * Helpful when you need an exported type that isn't referenced in any endpoint
+   * @example ['WidgetResourcetypeEnum']
+   */
+  typeWhitelist?: string[]
+}
 
 function main() {
-  if (!process.env.OPEN_API_URL) {
+  const CONFIG_PATH = path.resolve(process.cwd(), 'sparing-open-api.config.js')
+
+  if (!fs.existsSync(CONFIG_PATH)) {
     console.log(
-      chalk.yellow('OPEN_API_URL is not defined. Service creation aborted!')
+      chalk.yellow(
+        "Couldn't find sparing-open-api.config.js. Service creation aborted!"
+      )
     )
     return
   }
 
-  const OUTPUT_NAME = process.env.OPEN_API_OUT_FILENAME || '__generated-api.ts'
-  const OUTPUT_PATH = path.resolve(
-    process.cwd(),
-    process.env.OPEN_API_OUT_DIR || './service/'
-  )
+  const {
+    url,
+    outDir = './service/',
+    outFilename = '__generated-api.ts',
+    exclude = [],
+    include = [],
+    optimizeTypes = true,
+    typeWhitelist = []
+  } = require(CONFIG_PATH) as Config
+
+  if (!url) {
+    console.log(
+      chalk.yellow(
+        '"url" property in sparing-open-api.config.js is not defined. Service creation aborted!'
+      )
+    )
+    return
+  }
+
+  const OUTPUT_PATH = path.resolve(process.cwd(), outDir)
   const TEMPLATES_PATH = path.resolve(__dirname, '../templates/')
 
   generateApi({
-    name: OUTPUT_NAME,
-    url: process.env.OPEN_API_URL,
+    name: outFilename,
+    url,
     httpClientType: 'axios',
     templates: TEMPLATES_PATH,
     prettier: {
@@ -33,8 +97,19 @@ function main() {
     },
     generateUnionEnums: true,
     unwrapResponseData: true,
+    // @ts-ignore
+    exclude,
+    // @ts-ignore
+    include,
     hooks: {
-      onCreateRoute: routeData => {
+      onCreateRoute: data => {
+        // TODO Simplify types
+        const routeData = data as typeof data & {
+          responseBodySchema: { type: string }
+          routeParams: { query: object[] }
+          request: { query: { type: string; name: string; optional: boolean } }
+        }
+
         if (routeData.request.method !== 'get') return routeData
 
         const type = `FetchKeys<${routeData.responseBodySchema.type}>`
@@ -65,12 +140,19 @@ function main() {
         return routeData
       }
     }
-  }).then(({ files }) => {
-    if (!fs.existsSync(OUTPUT_PATH)) fs.mkdirSync(OUTPUT_PATH)
+  }).then(async ({ files }) => {
+    if (!fs.existsSync(OUTPUT_PATH))
+      fs.mkdirSync(OUTPUT_PATH, { recursive: true })
 
-    files.forEach(({ content, name }) => {
-      fs.writeFileSync(`${OUTPUT_PATH}/${name}`, content)
-    })
+    const [{ content, name }] = files
+    const fullPath = `${OUTPUT_PATH}/${name}`
+
+    fs.writeFileSync(fullPath, content)
+
+    if (optimizeTypes) {
+      console.log('🤏   optimizing types')
+      await optimizeTypesUtil(fullPath, typeWhitelist)
+    }
 
     process.exit(0)
   })

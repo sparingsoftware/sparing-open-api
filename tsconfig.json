@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
+    "strict": true,
     "outDir": "dist",
     "rootDir": "src",
     "module": "commonjs",
-    "target": "es5",
-    "sourceMap": true
+    "target": "es6",
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "declaration": true,
+    "skipLibCheck": true
   },
-  "exclude": [
-    "node_modules",
-    "templates"
-  ]
+  "exclude": ["node_modules", "templates"]
 }
