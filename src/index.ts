@@ -52,7 +52,7 @@ export type Config = {
   typeWhitelist?: string[]
 }
 
-function main() {
+async function main() {
   const CONFIG_PATH = path.resolve(process.cwd(), 'sparing-open-api.config.js')
 
   if (!fs.existsSync(CONFIG_PATH)) {
@@ -72,7 +72,7 @@ function main() {
     include = [],
     optimizeTypes = true,
     typeWhitelist = []
-  } = require(CONFIG_PATH) as Config
+  } = (await import(CONFIG_PATH)).default as Config
 
   if (!url) {
     console.log(
