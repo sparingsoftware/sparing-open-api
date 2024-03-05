@@ -3,12 +3,16 @@
     "strict": true,
     "outDir": "dist",
     "rootDir": "src",
-    "module": "commonjs",
-    "target": "es6",
+    "target": "es2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "noUncheckedIndexedAccess": true,
+    "isolatedModules": true,
     "esModuleInterop": true,
     "sourceMap": true,
     "declaration": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "allowJs": true
   },
   "exclude": ["node_modules", "templates"]
 }

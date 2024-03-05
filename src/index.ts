@@ -144,14 +144,18 @@ async function main() {
     if (!fs.existsSync(OUTPUT_PATH))
       fs.mkdirSync(OUTPUT_PATH, { recursive: true })
 
-    const [{ content, name }] = files
-    const fullPath = `${OUTPUT_PATH}/${name}`
+    const [firstFile] = files
 
-    fs.writeFileSync(fullPath, content)
+    if (firstFile) {
+      const { name, content } = firstFile
+      const fullPath = `${OUTPUT_PATH}/${name}`
 
-    if (optimizeTypes) {
-      console.log('🤏   optimizing types')
-      await optimizeTypesUtil(fullPath, typeWhitelist)
+      fs.writeFileSync(fullPath, content)
+
+      if (optimizeTypes) {
+        console.log('🤏   optimizing types')
+        await optimizeTypesUtil(fullPath, typeWhitelist)
+      }
     }
 
     process.exit(0)
