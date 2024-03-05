@@ -52,7 +52,7 @@ export type Config = {
   typeWhitelist?: string[]
 }
 
-function main() {
+async function main() {
   const CONFIG_PATH = path.resolve(process.cwd(), 'sparing-open-api.config.js')
 
   if (!fs.existsSync(CONFIG_PATH)) {
@@ -72,7 +72,7 @@ function main() {
     include = [],
     optimizeTypes = true,
     typeWhitelist = []
-  } = require(CONFIG_PATH) as Config
+  } = (await import(CONFIG_PATH)).default as Config
 
   if (!url) {
     console.log(
@@ -144,14 +144,18 @@ function main() {
     if (!fs.existsSync(OUTPUT_PATH))
       fs.mkdirSync(OUTPUT_PATH, { recursive: true })
 
-    const [{ content, name }] = files
-    const fullPath = `${OUTPUT_PATH}/${name}`
+    const [firstFile] = files
 
-    fs.writeFileSync(fullPath, content)
+    if (firstFile) {
+      const { name, content } = firstFile
+      const fullPath = `${OUTPUT_PATH}/${name}`
 
-    if (optimizeTypes) {
-      console.log('🤏   optimizing types')
-      await optimizeTypesUtil(fullPath, typeWhitelist)
+      fs.writeFileSync(fullPath, content)
+
+      if (optimizeTypes) {
+        console.log('🤏   optimizing types')
+        await optimizeTypesUtil(fullPath, typeWhitelist)
+      }
     }
 
     process.exit(0)

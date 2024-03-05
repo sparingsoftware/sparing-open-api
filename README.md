@@ -10,7 +10,7 @@ Create a sparing-open-api.config.js file at the root of the project
 
 ```js
 /** @type {import('@sparing-software/sparing-open-api').Config} */
-module.exports = {
+export default {
   url: 'https://example.com/schema/'
 }
 ```
