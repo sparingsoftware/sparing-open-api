@@ -1,0 +1,4860 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "API",
+    "version": "1.0.0 (v1)"
+  },
+  "paths": {
+    "/public/contact/message/": {
+      "post": {
+        "operationId": "publicContactMessageCreate",
+        "tags": ["public"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PublicMessageRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/PublicMessageRequest"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/PublicMessageRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [
+          {
+            "knoxApiToken": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicMessage"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/public/core/languages/": {
+      "get": {
+        "operationId": "publicCoreLanguagesList",
+        "tags": ["public"],
+        "security": [
+          {
+            "knoxApiToken": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LanguageChoice"
+                  }
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/public/core/seo-settings/": {
+      "get": {
+        "operationId": "publicCoreSeoSettingsRetrieve",
+        "description": "Mixin for parsing restql query from request.\n\nNOTE: We are using `request.GET` instead of\n`request.query_params` because this might be\ncalled before DRF request is created(i.e from dispatch).\nThis means `request.query_params` might not be available\nwhen this mixin is used.",
+        "tags": ["public"],
+        "security": [
+          {
+            "knoxApiToken": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicSeoSettings"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/public/core/settings/": {
+      "get": {
+        "operationId": "publicCoreSettingsRetrieve",
+        "description": "Mixin for parsing restql query from request.\n\nNOTE: We are using `request.GET` instead of\n`request.query_params` because this might be\ncalled before DRF request is created(i.e from dispatch).\nThis means `request.query_params` might not be available\nwhen this mixin is used.",
+        "tags": ["public"],
+        "security": [
+          {
+            "knoxApiToken": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicSiteSettings"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/public/images/icons/": {
+      "get": {
+        "operationId": "publicImagesIconsRetrieve",
+        "tags": ["public"],
+        "security": [
+          {
+            "knoxApiToken": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "No response body"
+          }
+        }
+      }
+    },
+    "/public/menu/footer/": {
+      "get": {
+        "operationId": "publicMenuFooterRetrieve",
+        "description": "Mixin for parsing restql query from request.\n\nNOTE: We are using `request.GET` instead of\n`request.query_params` because this might be\ncalled before DRF request is created(i.e from dispatch).\nThis means `request.query_params` might not be available\nwhen this mixin is used.",
+        "tags": ["public"],
+        "security": [
+          {
+            "knoxApiToken": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicFooterMenu"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/public/menu/main/": {
+      "get": {
+        "operationId": "publicMenuMainRetrieve",
+        "description": "Mixin for parsing restql query from request.\n\nNOTE: We are using `request.GET` instead of\n`request.query_params` because this might be\ncalled before DRF request is created(i.e from dispatch).\nThis means `request.query_params` might not be available\nwhen this mixin is used.",
+        "tags": ["public"],
+        "security": [
+          {
+            "knoxApiToken": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicMainMenu"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/public/newsletter/subscribe/": {
+      "post": {
+        "operationId": "publicNewsletterSubscribeCreate",
+        "tags": ["public"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PublicSubscribeRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/PublicSubscribeRequest"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/PublicSubscribeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [
+          {
+            "knoxApiToken": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicSubscribe"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/public/pages/articles/": {
+      "get": {
+        "operationId": "publicPagesArticlesList",
+        "description": "Mixin for parsing restql query from request.\n\nNOTE: We are using `request.GET` instead of\n`request.query_params` because this might be\ncalled before DRF request is created(i.e from dispatch).\nThis means `request.query_params` might not be available\nwhen this mixin is used.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "author",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "is_highlighted",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "A page number within the paginated result set.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page_size",
+            "required": false,
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "tags",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "explode": true,
+            "style": "form"
+          }
+        ],
+        "tags": ["public"],
+        "security": [
+          {
+            "knoxApiToken": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedPublicArticleList"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/public/pages/articles/{slug}/": {
+      "get": {
+        "operationId": "publicPagesArticlesRetrieve",
+        "description": "Mixin for parsing restql query from request.\n\nNOTE: We are using `request.GET` instead of\n`request.query_params` because this might be\ncalled before DRF request is created(i.e from dispatch).\nThis means `request.query_params` might not be available\nwhen this mixin is used.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "schema": {
+              "type": "string",
+              "title": "Slug"
+            },
+            "required": true
+          }
+        ],
+        "tags": ["public"],
+        "security": [
+          {
+            "knoxApiToken": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicArticleDetail"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/public/pages/events/": {
+      "get": {
+        "operationId": "publicPagesEventsList",
+        "description": "Mixin for parsing restql query from request.\n\nNOTE: We are using `request.GET` instead of\n`request.query_params` because this might be\ncalled before DRF request is created(i.e from dispatch).\nThis means `request.query_params` might not be available\nwhen this mixin is used.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "date_from",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "in": "query",
+            "name": "date_to",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "A page number within the paginated result set.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page_size",
+            "required": false,
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "place",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "explode": true,
+            "style": "form"
+          },
+          {
+            "in": "query",
+            "name": "tags",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "explode": true,
+            "style": "form"
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "schema": {
+              "type": "string",
+              "enum": ["concert", "spectacle"]
+            },
+            "description": "* `spectacle` - Spektakl\n* `concert` - Koncert"
+          }
+        ],
+        "tags": ["public"],
+        "security": [
+          {
+            "knoxApiToken": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedPublicEventListList"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/public/pages/events/{slug}/": {
+      "get": {
+        "operationId": "publicPagesEventsRetrieve",
+        "description": "Mixin for parsing restql query from request.\n\nNOTE: We are using `request.GET` instead of\n`request.query_params` because this might be\ncalled before DRF request is created(i.e from dispatch).\nThis means `request.query_params` might not be available\nwhen this mixin is used.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "schema": {
+              "type": "string",
+              "title": "Slug"
+            },
+            "required": true
+          }
+        ],
+        "tags": ["public"],
+        "security": [
+          {
+            "knoxApiToken": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicEvent"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/public/pages/events/dates/": {
+      "get": {
+        "operationId": "publicPagesEventsDatesList",
+        "description": "Mixin for parsing restql query from request.\n\nNOTE: We are using `request.GET` instead of\n`request.query_params` because this might be\ncalled before DRF request is created(i.e from dispatch).\nThis means `request.query_params` might not be available\nwhen this mixin is used.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "date_from",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "in": "query",
+            "name": "date_to",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "in": "query",
+            "name": "event",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "explode": true,
+            "style": "form"
+          },
+          {
+            "in": "query",
+            "name": "event__type",
+            "schema": {
+              "type": "string",
+              "enum": ["concert", "spectacle"]
+            },
+            "description": "* `spectacle` - Spektakl\n* `concert` - Koncert"
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "ordering",
+            "required": false,
+            "in": "query",
+            "description": "Which field to use when ordering the results.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "A page number within the paginated result set.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page_size",
+            "required": false,
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "place",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "explode": true,
+            "style": "form"
+          },
+          {
+            "in": "query",
+            "name": "tags",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "explode": true,
+            "style": "form"
+          }
+        ],
+        "tags": ["public"],
+        "security": [
+          {
+            "knoxApiToken": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedPublicEventDateWithEventList"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/public/pages/events/dates/{id}/": {
+      "get": {
+        "operationId": "publicPagesEventsDatesRetrieve",
+        "description": "Mixin for parsing restql query from request.\n\nNOTE: We are using `request.GET` instead of\n`request.query_params` because this might be\ncalled before DRF request is created(i.e from dispatch).\nThis means `request.query_params` might not be available\nwhen this mixin is used.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "A unique integer value identifying this event date.",
+            "required": true
+          }
+        ],
+        "tags": ["public"],
+        "security": [
+          {
+            "knoxApiToken": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicEventDateWithEvent"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/public/pages/events/dates/options/": {
+      "get": {
+        "operationId": "publicPagesEventsDatesOptionsRetrieve",
+        "description": "Handler method for HTTP 'OPTIONS' request.",
+        "tags": ["public"],
+        "security": [
+          {
+            "knoxApiToken": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicEventDateOptions"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/public/pages/simple-pages/": {
+      "get": {
+        "operationId": "publicPagesSimplePagesList",
+        "description": "Mixin for parsing restql query from request.\n\nNOTE: We are using `request.GET` instead of\n`request.query_params` because this might be\ncalled before DRF request is created(i.e from dispatch).\nThis means `request.query_params` might not be available\nwhen this mixin is used.",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "A page number within the paginated result set.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page_size",
+            "required": false,
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "description": "A search term.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["public"],
+        "security": [
+          {
+            "knoxApiToken": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedPublicSimplePageResponseList"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/public/pages/simple-pages/{slug}/": {
+      "get": {
+        "operationId": "publicPagesSimplePagesRetrieve",
+        "description": "Mixin for parsing restql query from request.\n\nNOTE: We are using `request.GET` instead of\n`request.query_params` because this might be\ncalled before DRF request is created(i.e from dispatch).\nThis means `request.query_params` might not be available\nwhen this mixin is used.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "schema": {
+              "type": "string",
+              "title": "Slug"
+            },
+            "required": true
+          }
+        ],
+        "tags": ["public"],
+        "security": [
+          {
+            "knoxApiToken": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicSimplePageResponse"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/public/pages/sitemap/": {
+      "get": {
+        "operationId": "publicPagesSitemapRetrieve",
+        "tags": ["public"],
+        "security": [
+          {
+            "knoxApiToken": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagesSitemapResponse"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/public/places/": {
+      "get": {
+        "operationId": "publicPlacesList",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "A page number within the paginated result set.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page_size",
+            "required": false,
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "tags": ["public"],
+        "security": [
+          {
+            "knoxApiToken": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedPublicPlaceList"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/public/places/{id}/": {
+      "get": {
+        "operationId": "publicPlacesRetrieve",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "description": "A unique value identifying this Miejsce.",
+            "required": true
+          }
+        ],
+        "tags": ["public"],
+        "security": [
+          {
+            "knoxApiToken": []
+          },
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicPlace"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/public/users/token/login/": {
+      "post": {
+        "operationId": "publicUsersTokenLoginCreate",
+        "tags": ["public"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomAuthTokenRequest"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomAuthTokenRequest"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomAuthTokenRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [
+          {
+            "knoxApiToken": []
+          },
+          {
+            "cookieAuth": []
+          },
+          {}
+        ],
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomAuthToken"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/schema-1234/": {
+      "get": {
+        "operationId": "schema1234Retrieve",
+        "description": "OpenApi3 schema for this API. Format can be selected via content negotiation.\n\n- YAML: application/vnd.oai.openapi\n- JSON: application/vnd.oai.openapi+json",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "format",
+            "schema": {
+              "type": "string",
+              "enum": ["json", "yaml"]
+            }
+          },
+          {
+            "in": "query",
+            "name": "lang",
+            "schema": {
+              "type": "string",
+              "enum": ["en", "pl"]
+            }
+          }
+        ],
+        "tags": ["schema-1234"],
+        "security": [
+          {
+            "knoxApiToken": []
+          },
+          {
+            "cookieAuth": []
+          },
+          {}
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/vnd.oai.openapi": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {}
+                }
+              },
+              "application/yaml": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {}
+                }
+              },
+              "application/vnd.oai.openapi+json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {}
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {}
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/schema-public/": {
+      "get": {
+        "operationId": "schemaPublicRetrieve",
+        "description": "OpenApi3 schema for this API. Format can be selected via content negotiation.\n\n- YAML: application/vnd.oai.openapi\n- JSON: application/vnd.oai.openapi+json",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "format",
+            "schema": {
+              "type": "string",
+              "enum": ["json", "yaml"]
+            }
+          },
+          {
+            "in": "query",
+            "name": "lang",
+            "schema": {
+              "type": "string",
+              "enum": ["en", "pl"]
+            }
+          }
+        ],
+        "tags": ["schema-public"],
+        "security": [
+          {
+            "knoxApiToken": []
+          },
+          {
+            "cookieAuth": []
+          },
+          {}
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/vnd.oai.openapi": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {}
+                }
+              },
+              "application/yaml": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {}
+                }
+              },
+              "application/vnd.oai.openapi+json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {}
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {}
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AnchorTypeEnum": {
+        "enum": [
+          "simplepage",
+          "attachment",
+          "article",
+          "url",
+          "calendly",
+          "video_popup"
+        ],
+        "type": "string"
+      },
+      "BlankEnum": {
+        "enum": [""]
+      },
+      "ButtonColorEnum": {
+        "enum": ["primary", "secondary", "tertiary"],
+        "type": "string",
+        "description": "* `primary` - Podstawowy\n* `secondary` - Drugorzędny\n* `tertiary` - Trzeciorzędny"
+      },
+      "CustomAuthToken": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "required": ["token"]
+      },
+      "CustomAuthTokenRequest": {
+        "type": "object",
+        "properties": {
+          "password": {
+            "type": "string",
+            "writeOnly": true,
+            "minLength": 1,
+            "title": "Hasło"
+          },
+          "email": {
+            "type": "string",
+            "writeOnly": true,
+            "minLength": 1
+          }
+        },
+        "required": ["email", "password"]
+      },
+      "EventTypeEnum": {
+        "enum": ["spectacle", "concert"],
+        "type": "string",
+        "description": "* `spectacle` - Spektakl\n* `concert` - Koncert"
+      },
+      "HorizontalMarginEnum": {
+        "enum": ["no_margin", "small", "large"],
+        "type": "string",
+        "description": "* `no_margin` - Bez marginesu\n* `small` - Mały\n* `large` - Duży"
+      },
+      "LanguageChoice": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "value": {
+            "$ref": "#/components/schemas/ValueEnum"
+          }
+        },
+        "required": ["label", "value"]
+      },
+      "MarginBottomEnum": {
+        "enum": ["small", "medium", "large", "none"],
+        "type": "string",
+        "description": "* `small` - Mały\n* `medium` - Średni\n* `large` - Duży\n* `none` - Brak"
+      },
+      "MarginTopEnum": {
+        "enum": ["small", "medium", "large", "none"],
+        "type": "string",
+        "description": "* `small` - Mały\n* `medium` - Średni\n* `large` - Duży\n* `none` - Brak"
+      },
+      "Option": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          }
+        },
+        "required": ["label", "value"]
+      },
+      "PagesSitemapResponse": {
+        "type": "object",
+        "properties": {
+          "simplepage": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicSitemap"
+            }
+          },
+          "article": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicSitemap"
+            }
+          }
+        },
+        "required": ["article", "simplepage"]
+      },
+      "PaginatedPublicArticleList": {
+        "type": "object",
+        "required": ["count", "results"],
+        "properties": {
+          "count": {
+            "type": "integer",
+            "example": 123
+          },
+          "next": {
+            "type": "string",
+            "nullable": true,
+            "format": "uri",
+            "example": "http://api.example.org/accounts/?page=4"
+          },
+          "previous": {
+            "type": "string",
+            "nullable": true,
+            "format": "uri",
+            "example": "http://api.example.org/accounts/?page=2"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicArticle"
+            }
+          },
+          "page_size": {
+            "type": "integer",
+            "example": 15
+          }
+        }
+      },
+      "PaginatedPublicEventDateWithEventList": {
+        "type": "object",
+        "required": ["count", "results"],
+        "properties": {
+          "count": {
+            "type": "integer",
+            "example": 123
+          },
+          "next": {
+            "type": "string",
+            "nullable": true,
+            "format": "uri",
+            "example": "http://api.example.org/accounts/?page=4"
+          },
+          "previous": {
+            "type": "string",
+            "nullable": true,
+            "format": "uri",
+            "example": "http://api.example.org/accounts/?page=2"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicEventDateWithEvent"
+            }
+          },
+          "page_size": {
+            "type": "integer",
+            "example": 15
+          }
+        }
+      },
+      "PaginatedPublicEventListList": {
+        "type": "object",
+        "required": ["count", "results"],
+        "properties": {
+          "count": {
+            "type": "integer",
+            "example": 123
+          },
+          "next": {
+            "type": "string",
+            "nullable": true,
+            "format": "uri",
+            "example": "http://api.example.org/accounts/?page=4"
+          },
+          "previous": {
+            "type": "string",
+            "nullable": true,
+            "format": "uri",
+            "example": "http://api.example.org/accounts/?page=2"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicEventList"
+            }
+          },
+          "page_size": {
+            "type": "integer",
+            "example": 15
+          }
+        }
+      },
+      "PaginatedPublicPlaceList": {
+        "type": "object",
+        "required": ["count", "results"],
+        "properties": {
+          "count": {
+            "type": "integer",
+            "example": 123
+          },
+          "next": {
+            "type": "string",
+            "nullable": true,
+            "format": "uri",
+            "example": "http://api.example.org/accounts/?page=4"
+          },
+          "previous": {
+            "type": "string",
+            "nullable": true,
+            "format": "uri",
+            "example": "http://api.example.org/accounts/?page=2"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicPlace"
+            }
+          },
+          "page_size": {
+            "type": "integer",
+            "example": 15
+          }
+        }
+      },
+      "PaginatedPublicSimplePageResponseList": {
+        "type": "object",
+        "required": ["count", "results"],
+        "properties": {
+          "count": {
+            "type": "integer",
+            "example": 123
+          },
+          "next": {
+            "type": "string",
+            "nullable": true,
+            "format": "uri",
+            "example": "http://api.example.org/accounts/?page=4"
+          },
+          "previous": {
+            "type": "string",
+            "nullable": true,
+            "format": "uri",
+            "example": "http://api.example.org/accounts/?page=2"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicSimplePageResponse"
+            }
+          },
+          "page_size": {
+            "type": "integer",
+            "example": 15
+          }
+        }
+      },
+      "PublicArticle": {
+        "type": "object",
+        "description": "Mixin for parsing restql query from request.\n\nNOTE: We are using `request.GET` instead of\n`request.query_params` because this might be\ncalled before DRF request is created(i.e from dispatch).\nThis means `request.query_params` might not be available\nwhen this mixin is used.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "slug": {
+            "type": "string",
+            "readOnly": true
+          },
+          "slug_en": {
+            "type": "string",
+            "title": "Slug",
+            "maxLength": 50,
+            "pattern": "^[-a-zA-Z0-9_]+$"
+          },
+          "slug_pl": {
+            "type": "string",
+            "title": "Slug",
+            "maxLength": 50,
+            "pattern": "^[-a-zA-Z0-9_]+$"
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "lead": {
+            "type": "string",
+            "readOnly": true
+          },
+          "widgets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicWidget"
+            }
+          },
+          "publication_date": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "title": "Data publikacji"
+          },
+          "image": {
+            "$ref": "#/components/schemas/PublicImage"
+          },
+          "video_video_id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "video_is_vimeo": {
+            "type": "boolean"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicTag"
+            }
+          },
+          "author": {
+            "$ref": "#/components/schemas/PublicArticleAuthor"
+          },
+          "meta_keywords": {
+            "type": "string",
+            "readOnly": true
+          },
+          "caption": {
+            "type": "string",
+            "readOnly": true
+          },
+          "banner_cta_button": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PublicCtaButton"
+              }
+            ],
+            "nullable": true
+          },
+          "banner_background": {
+            "$ref": "#/components/schemas/PublicImage"
+          },
+          "banner_title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "banner_text": {
+            "type": "string",
+            "readOnly": true
+          },
+          "is_banner_visible": {
+            "type": "boolean"
+          },
+          "banner_full_width": {
+            "type": "boolean"
+          },
+          "banner_with_white_text": {
+            "type": "boolean"
+          },
+          "related_articles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicRelatedArticles"
+            },
+            "nullable": true
+          },
+          "site_title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "meta_description": {
+            "type": "string",
+            "readOnly": true
+          },
+          "og_title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "og_description": {
+            "type": "string",
+            "readOnly": true
+          },
+          "og_image": {
+            "$ref": "#/components/schemas/PublicImage"
+          }
+        },
+        "required": [
+          "author",
+          "banner_background",
+          "banner_cta_button",
+          "banner_text",
+          "banner_title",
+          "caption",
+          "id",
+          "image",
+          "lead",
+          "meta_description",
+          "meta_keywords",
+          "og_description",
+          "og_image",
+          "og_title",
+          "related_articles",
+          "site_title",
+          "slug",
+          "tags",
+          "title",
+          "video_is_vimeo",
+          "video_video_id",
+          "widgets"
+        ]
+      },
+      "PublicArticleAuthor": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "title": "Nazwa",
+            "maxLength": 256
+          },
+          "position": {
+            "type": "string",
+            "readOnly": true
+          },
+          "bio": {
+            "type": "string",
+            "readOnly": true
+          },
+          "linked_in": {
+            "type": "string",
+            "format": "uri",
+            "maxLength": 200
+          },
+          "image": {
+            "$ref": "#/components/schemas/PublicImage"
+          }
+        },
+        "required": ["bio", "id", "image", "name", "position"]
+      },
+      "PublicArticleDetail": {
+        "type": "object",
+        "description": "Mixin for parsing restql query from request.\n\nNOTE: We are using `request.GET` instead of\n`request.query_params` because this might be\ncalled before DRF request is created(i.e from dispatch).\nThis means `request.query_params` might not be available\nwhen this mixin is used.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "slug": {
+            "type": "string",
+            "readOnly": true
+          },
+          "slug_en": {
+            "type": "string",
+            "title": "Slug",
+            "maxLength": 50,
+            "pattern": "^[-a-zA-Z0-9_]+$"
+          },
+          "slug_pl": {
+            "type": "string",
+            "title": "Slug",
+            "maxLength": 50,
+            "pattern": "^[-a-zA-Z0-9_]+$"
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "lead": {
+            "type": "string",
+            "readOnly": true
+          },
+          "widgets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicWidget"
+            }
+          },
+          "publication_date": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "title": "Data publikacji"
+          },
+          "image": {
+            "$ref": "#/components/schemas/PublicImage"
+          },
+          "video_video_id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "video_is_vimeo": {
+            "type": "boolean"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicTag"
+            }
+          },
+          "author": {
+            "$ref": "#/components/schemas/PublicArticleAuthor"
+          },
+          "meta_keywords": {
+            "type": "string",
+            "readOnly": true
+          },
+          "caption": {
+            "type": "string",
+            "readOnly": true
+          },
+          "banner_cta_button": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PublicCtaButton"
+              }
+            ],
+            "nullable": true
+          },
+          "banner_background": {
+            "$ref": "#/components/schemas/PublicImage"
+          },
+          "banner_title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "banner_text": {
+            "type": "string",
+            "readOnly": true
+          },
+          "is_banner_visible": {
+            "type": "boolean"
+          },
+          "banner_full_width": {
+            "type": "boolean"
+          },
+          "banner_with_white_text": {
+            "type": "boolean"
+          },
+          "related_articles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicRelatedArticles"
+            },
+            "nullable": true
+          },
+          "site_title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "meta_description": {
+            "type": "string",
+            "readOnly": true
+          },
+          "og_title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "og_description": {
+            "type": "string",
+            "readOnly": true
+          },
+          "og_image": {
+            "$ref": "#/components/schemas/PublicImage"
+          },
+          "link_to_all": {
+            "type": "string",
+            "readOnly": true,
+            "default": "blog"
+          }
+        },
+        "required": [
+          "author",
+          "banner_background",
+          "banner_cta_button",
+          "banner_text",
+          "banner_title",
+          "caption",
+          "id",
+          "image",
+          "lead",
+          "link_to_all",
+          "meta_description",
+          "meta_keywords",
+          "og_description",
+          "og_image",
+          "og_title",
+          "related_articles",
+          "site_title",
+          "slug",
+          "tags",
+          "title",
+          "video_is_vimeo",
+          "video_video_id",
+          "widgets"
+        ]
+      },
+      "PublicArticleListWidget": {
+        "type": "object",
+        "properties": {
+          "margin_top": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginTopEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "margin_bottom": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginBottomEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "banner_title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "banner_text": {
+            "type": "string",
+            "readOnly": true
+          },
+          "banner_cta_button": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PublicCtaButton"
+              }
+            ],
+            "nullable": true
+          },
+          "banner_background": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PublicImage"
+              }
+            ],
+            "nullable": true
+          },
+          "banner_with_white_text": {
+            "type": "boolean"
+          },
+          "is_banner_visible": {
+            "type": "boolean"
+          },
+          "banner_full_width": {
+            "type": "boolean"
+          },
+          "all_available_tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicTag"
+            },
+            "readOnly": true
+          },
+          "resourcetype": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResourcetypeEnum"
+              }
+            ],
+            "default": "ArticleListWidget"
+          }
+        },
+        "required": [
+          "all_available_tags",
+          "banner_background",
+          "banner_cta_button",
+          "banner_text",
+          "banner_title",
+          "id"
+        ]
+      },
+      "PublicBannerWithTextAndCtaWidget": {
+        "type": "object",
+        "properties": {
+          "margin_top": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginTopEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "margin_bottom": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginBottomEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "image": {
+            "$ref": "#/components/schemas/PublicImage"
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "text": {
+            "type": "string",
+            "readOnly": true
+          },
+          "cta_button": {
+            "$ref": "#/components/schemas/PublicCtaButton"
+          },
+          "with_white_text": {
+            "type": "boolean"
+          },
+          "full_width": {
+            "type": "boolean"
+          },
+          "resourcetype": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResourcetypeEnum"
+              }
+            ],
+            "default": "BannerWithTextAndCtaWidget"
+          }
+        },
+        "required": ["cta_button", "id", "image", "text", "title"]
+      },
+      "PublicBlockquoteWidget": {
+        "type": "object",
+        "properties": {
+          "margin_top": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginTopEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "margin_bottom": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginBottomEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "quote": {
+            "type": "string",
+            "readOnly": true
+          },
+          "signature": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "resourcetype": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResourcetypeEnum"
+              }
+            ],
+            "default": "BlockquoteWidget"
+          }
+        },
+        "required": ["id", "quote"]
+      },
+      "PublicBoxWithTextItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "text": {
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "required": ["id", "text", "title"]
+      },
+      "PublicBoxWithTextWidget": {
+        "type": "object",
+        "properties": {
+          "margin_top": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginTopEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "margin_bottom": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginBottomEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicBoxWithTextItem"
+            }
+          },
+          "cta_button": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PublicCtaButton"
+              }
+            ],
+            "nullable": true
+          },
+          "resourcetype": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResourcetypeEnum"
+              }
+            ],
+            "default": "BoxWithTextWidget"
+          }
+        },
+        "required": ["cta_button", "id", "items", "title"]
+      },
+      "PublicBulletListPoint": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "required": ["content"]
+      },
+      "PublicBulletListWidget": {
+        "type": "object",
+        "properties": {
+          "margin_top": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginTopEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "margin_bottom": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginBottomEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "points": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicBulletListPoint"
+            }
+          },
+          "cta_button": {
+            "$ref": "#/components/schemas/PublicCtaButton"
+          },
+          "resourcetype": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResourcetypeEnum"
+              }
+            ],
+            "default": "BulletListWidget"
+          }
+        },
+        "required": ["cta_button", "id", "points", "title"]
+      },
+      "PublicContactFormWidget": {
+        "type": "object",
+        "properties": {
+          "margin_top": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginTopEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "margin_bottom": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginBottomEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "description": {
+            "type": "string",
+            "readOnly": true
+          },
+          "image": {
+            "$ref": "#/components/schemas/PublicImage"
+          },
+          "agreement_text": {
+            "type": "string",
+            "readOnly": true
+          },
+          "is_text_left": {
+            "type": "boolean"
+          },
+          "resourcetype": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResourcetypeEnum"
+              }
+            ],
+            "default": "ContactFormWidget"
+          }
+        },
+        "required": ["agreement_text", "description", "id", "image", "title"]
+      },
+      "PublicContactPerson": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "image": {
+            "$ref": "#/components/schemas/PublicImage"
+          },
+          "first_name": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "last_name": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "position": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Adres e-mail",
+            "maxLength": 254
+          },
+          "phone": {
+            "type": "string",
+            "title": "Numer telefonu",
+            "maxLength": 128
+          },
+          "linked_in": {
+            "type": "string",
+            "format": "uri",
+            "maxLength": 200
+          }
+        },
+        "required": ["first_name", "id", "image", "last_name", "position"]
+      },
+      "PublicContactsWidget": {
+        "type": "object",
+        "properties": {
+          "margin_top": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginTopEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "margin_bottom": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginBottomEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "people": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicContactPerson"
+            }
+          },
+          "resourcetype": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResourcetypeEnum"
+              }
+            ],
+            "default": "ContactsWidget"
+          }
+        },
+        "required": ["id", "people", "title"]
+      },
+      "PublicCtaButton": {
+        "type": "object",
+        "description": "Mixin for parsing restql query from request.\n\nNOTE: We are using `request.GET` instead of\n`request.query_params` because this might be\ncalled before DRF request is created(i.e from dispatch).\nThis means `request.query_params` might not be available\nwhen this mixin is used.",
+        "properties": {
+          "color": {
+            "$ref": "#/components/schemas/ButtonColorEnum"
+          },
+          "link": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PublicLink"
+              }
+            ],
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "required": ["title"]
+      },
+      "PublicCtaButtonWidget": {
+        "type": "object",
+        "properties": {
+          "margin_top": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginTopEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "margin_bottom": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginBottomEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "cta_button": {
+            "$ref": "#/components/schemas/PublicCtaButton"
+          },
+          "resourcetype": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResourcetypeEnum"
+              }
+            ],
+            "default": "CtaButtonWidget"
+          }
+        },
+        "required": ["cta_button", "id"]
+      },
+      "PublicCustomerLogo": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "logotype": {
+            "$ref": "#/components/schemas/PublicImage"
+          },
+          "link": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PublicLink"
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "required": ["id", "logotype"]
+      },
+      "PublicCustomersRangeWidget": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "min_users": {
+            "type": "integer",
+            "maximum": 2147483647,
+            "minimum": 0
+          },
+          "max_users": {
+            "type": "integer",
+            "maximum": 2147483647,
+            "minimum": 0,
+            "nullable": true
+          },
+          "activation_fee": {
+            "type": "string",
+            "readOnly": true
+          },
+          "whats_included": {
+            "type": "string",
+            "readOnly": true
+          },
+          "monthly_payment_price": {
+            "type": "string",
+            "readOnly": true
+          },
+          "yearly_payment_price": {
+            "type": "string",
+            "readOnly": true
+          },
+          "monthly_cta": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PublicCtaButton"
+              }
+            ],
+            "nullable": true
+          },
+          "yearly_cta": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PublicCtaButton"
+              }
+            ],
+            "nullable": true
+          },
+          "selected_by_default": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "activation_fee",
+          "id",
+          "monthly_cta",
+          "monthly_payment_price",
+          "whats_included",
+          "yearly_cta",
+          "yearly_payment_price"
+        ]
+      },
+      "PublicEvent": {
+        "type": "object",
+        "description": "Mixin for parsing restql query from request.\n\nNOTE: We are using `request.GET` instead of\n`request.query_params` because this might be\ncalled before DRF request is created(i.e from dispatch).\nThis means `request.query_params` might not be available\nwhen this mixin is used.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "slug": {
+            "type": "string",
+            "readOnly": true
+          },
+          "duration": {
+            "type": "integer",
+            "maximum": 2147483647,
+            "minimum": 0,
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "readOnly": true
+          },
+          "slug_en": {
+            "type": "string",
+            "title": "Slug",
+            "maxLength": 50,
+            "pattern": "^[-a-zA-Z0-9_]+$"
+          },
+          "slug_pl": {
+            "type": "string",
+            "title": "Slug",
+            "maxLength": 50,
+            "pattern": "^[-a-zA-Z0-9_]+$"
+          },
+          "image": {
+            "$ref": "#/components/schemas/PublicImage"
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "widgets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicWidget"
+            }
+          },
+          "type": {
+            "$ref": "#/components/schemas/TypeEnum"
+          },
+          "type_display": {
+            "type": "string",
+            "readOnly": true
+          },
+          "dates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicEventDate"
+            }
+          },
+          "site_title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "meta_description": {
+            "type": "string",
+            "readOnly": true
+          },
+          "og_title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "og_description": {
+            "type": "string",
+            "readOnly": true
+          },
+          "og_image": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "dates",
+          "description",
+          "id",
+          "image",
+          "meta_description",
+          "og_description",
+          "og_title",
+          "site_title",
+          "slug",
+          "title",
+          "type_display",
+          "widgets"
+        ]
+      },
+      "PublicEventDate": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "place": {
+            "$ref": "#/components/schemas/PublicPlace"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "ticket_url": {
+            "type": "string",
+            "format": "uri",
+            "maxLength": 200
+          }
+        },
+        "required": ["date", "id", "place"]
+      },
+      "PublicEventDateOptions": {
+        "type": "object",
+        "properties": {
+          "types": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Option"
+            },
+            "readOnly": true
+          },
+          "dates": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "date"
+            },
+            "readOnly": true
+          }
+        },
+        "required": ["dates", "types"]
+      },
+      "PublicEventDateWithEvent": {
+        "type": "object",
+        "description": "Mixin for parsing restql query from request.\n\nNOTE: We are using `request.GET` instead of\n`request.query_params` because this might be\ncalled before DRF request is created(i.e from dispatch).\nThis means `request.query_params` might not be available\nwhen this mixin is used.",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "place": {
+            "$ref": "#/components/schemas/PublicPlace"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "ticket_url": {
+            "type": "string",
+            "format": "uri",
+            "maxLength": 200
+          },
+          "event_title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "event_slug": {
+            "type": "string",
+            "readOnly": true
+          },
+          "event_image": {
+            "$ref": "#/components/schemas/PublicImage"
+          },
+          "event_duration": {
+            "type": "integer",
+            "maximum": 2147483647,
+            "minimum": 0,
+            "nullable": true,
+            "readOnly": true
+          },
+          "event_type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EventTypeEnum"
+              }
+            ],
+            "readOnly": true
+          },
+          "event_type_display": {
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "date",
+          "event_duration",
+          "event_image",
+          "event_slug",
+          "event_title",
+          "event_type",
+          "event_type_display",
+          "id",
+          "place"
+        ]
+      },
+      "PublicEventList": {
+        "type": "object",
+        "description": "Mixin for parsing restql query from request.\n\nNOTE: We are using `request.GET` instead of\n`request.query_params` because this might be\ncalled before DRF request is created(i.e from dispatch).\nThis means `request.query_params` might not be available\nwhen this mixin is used.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "slug": {
+            "type": "string",
+            "readOnly": true
+          },
+          "image": {
+            "$ref": "#/components/schemas/PublicImage"
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "type": {
+            "$ref": "#/components/schemas/TypeEnum"
+          },
+          "dates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicEventDate"
+            }
+          }
+        },
+        "required": ["dates", "id", "image", "slug", "title"]
+      },
+      "PublicFaqItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "question": {
+            "type": "string",
+            "readOnly": true
+          },
+          "answer": {
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "required": ["answer", "id", "question"]
+      },
+      "PublicFaqWidget": {
+        "type": "object",
+        "properties": {
+          "margin_top": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginTopEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "margin_bottom": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginBottomEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicFaqItem"
+            }
+          },
+          "resourcetype": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResourcetypeEnum"
+              }
+            ],
+            "default": "FaqWidget"
+          }
+        },
+        "required": ["id", "items", "title"]
+      },
+      "PublicFooterItem": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "readOnly": true
+          },
+          "link": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PublicLink"
+              }
+            ],
+            "nullable": true
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicSecondLevelFooterItem"
+            }
+          }
+        },
+        "required": ["items", "label"]
+      },
+      "PublicFooterMenu": {
+        "type": "object",
+        "description": "Mixin for parsing restql query from request.\n\nNOTE: We are using `request.GET` instead of\n`request.query_params` because this might be\ncalled before DRF request is created(i.e from dispatch).\nThis means `request.query_params` might not be available\nwhen this mixin is used.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicFooterItem"
+            }
+          },
+          "contact_text": {
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "required": ["contact_text", "id", "items"]
+      },
+      "PublicGalleryImage": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "image": {
+            "$ref": "#/components/schemas/PublicImage"
+          }
+        },
+        "required": ["id", "image"]
+      },
+      "PublicGalleryWidget": {
+        "type": "object",
+        "properties": {
+          "margin_top": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginTopEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "margin_bottom": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginBottomEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicGalleryImage"
+            }
+          },
+          "resourcetype": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResourcetypeEnum"
+              }
+            ],
+            "default": "GalleryWidget"
+          }
+        },
+        "required": ["id", "images", "title"]
+      },
+      "PublicImage": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "images": {
+            "type": "string",
+            "readOnly": true
+          },
+          "alt": {
+            "type": "string",
+            "readOnly": true
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "file": {
+            "type": "string",
+            "format": "uri"
+          },
+          "height": {
+            "type": "integer",
+            "readOnly": true,
+            "nullable": true
+          },
+          "width": {
+            "type": "integer",
+            "readOnly": true,
+            "nullable": true
+          },
+          "is_svg": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "ppoi_tuple": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minLength": 2,
+            "maxLength": 2,
+            "readOnly": true
+          },
+          "dominant_color": {
+            "type": "string",
+            "maxLength": 7
+          },
+          "has_transparency": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "alt",
+          "height",
+          "id",
+          "images",
+          "is_svg",
+          "ppoi_tuple",
+          "title",
+          "width"
+        ]
+      },
+      "PublicImageTextListItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "text": {
+            "type": "string",
+            "readOnly": true
+          },
+          "subtitle": {
+            "type": "string",
+            "readOnly": true
+          },
+          "image": {
+            "$ref": "#/components/schemas/PublicImage"
+          }
+        },
+        "required": ["id", "image", "subtitle", "text", "title"]
+      },
+      "PublicImageTextListWidget": {
+        "type": "object",
+        "properties": {
+          "margin_top": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginTopEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "margin_bottom": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginBottomEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicImageTextListItem"
+            }
+          },
+          "resourcetype": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResourcetypeEnum"
+              }
+            ],
+            "default": "ImageTextListWidget"
+          }
+        },
+        "required": ["id", "items", "title"]
+      },
+      "PublicImageWidget": {
+        "type": "object",
+        "properties": {
+          "margin_top": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginTopEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "margin_bottom": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginBottomEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "image": {
+            "$ref": "#/components/schemas/PublicImage"
+          },
+          "caption": {
+            "type": "string",
+            "readOnly": true
+          },
+          "horizontal_margin": {
+            "$ref": "#/components/schemas/HorizontalMarginEnum"
+          },
+          "resourcetype": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResourcetypeEnum"
+              }
+            ],
+            "default": "ImageWidget"
+          }
+        },
+        "required": ["caption", "id", "image"]
+      },
+      "PublicImageWithAccordionItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "content": {
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "required": ["content", "id", "title"]
+      },
+      "PublicImageWithAccordionsWidget": {
+        "type": "object",
+        "properties": {
+          "margin_top": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginTopEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "margin_bottom": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginBottomEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "image": {
+            "$ref": "#/components/schemas/PublicImage"
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicImageWithAccordionItem"
+            }
+          },
+          "is_text_left": {
+            "type": "boolean"
+          },
+          "resourcetype": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResourcetypeEnum"
+              }
+            ],
+            "default": "ImageWithAccordionsWidget"
+          }
+        },
+        "required": ["id", "image", "items", "title"]
+      },
+      "PublicImageWithMultipleLinksWidget": {
+        "type": "object",
+        "properties": {
+          "margin_top": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginTopEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "margin_bottom": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginBottomEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "image": {
+            "$ref": "#/components/schemas/PublicImage"
+          },
+          "map_areas": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicMapArea"
+            }
+          },
+          "resourcetype": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResourcetypeEnum"
+              }
+            ],
+            "default": "ImageWithMultipleLinksWidget"
+          }
+        },
+        "required": ["id", "image", "map_areas"]
+      },
+      "PublicImageWithTextWidget": {
+        "type": "object",
+        "properties": {
+          "margin_top": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginTopEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "margin_bottom": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginBottomEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "image": {
+            "$ref": "#/components/schemas/PublicImage"
+          },
+          "video_video_id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "video_is_vimeo": {
+            "type": "boolean"
+          },
+          "text": {
+            "type": "string",
+            "readOnly": true
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "is_text_left": {
+            "type": "boolean"
+          },
+          "cta_button": {
+            "$ref": "#/components/schemas/PublicCtaButton"
+          },
+          "resourcetype": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResourcetypeEnum"
+              }
+            ],
+            "default": "ImageWithTextWidget"
+          }
+        },
+        "required": [
+          "cta_button",
+          "id",
+          "image",
+          "text",
+          "title",
+          "video_is_vimeo",
+          "video_video_id"
+        ]
+      },
+      "PublicImageWithTilesWidget": {
+        "type": "object",
+        "properties": {
+          "margin_top": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginTopEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "margin_bottom": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginBottomEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "image": {
+            "$ref": "#/components/schemas/PublicImage"
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "is_text_left": {
+            "type": "boolean"
+          },
+          "cta_button": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PublicCtaButton"
+              }
+            ],
+            "nullable": true
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicTileItem"
+            }
+          },
+          "resourcetype": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResourcetypeEnum"
+              }
+            ],
+            "default": "ImageWithTilesWidget"
+          }
+        },
+        "required": ["cta_button", "id", "image", "items", "title"]
+      },
+      "PublicLineUpWidget": {
+        "type": "object",
+        "properties": {
+          "margin_top": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginTopEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "margin_bottom": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginBottomEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "allow_date_filter": {
+            "type": "boolean"
+          },
+          "allow_place_filter": {
+            "type": "boolean"
+          },
+          "allow_category_filter": {
+            "type": "boolean"
+          },
+          "resourcetype": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResourcetypeEnum"
+              }
+            ],
+            "default": "LineUpWidget"
+          }
+        },
+        "required": ["id", "title"]
+      },
+      "PublicLink": {
+        "type": "object",
+        "properties": {
+          "anchor_type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AnchorTypeEnum"
+              }
+            ],
+            "readOnly": true
+          },
+          "anchor_id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "slug": {
+            "type": "string",
+            "readOnly": true
+          },
+          "target_blank": {
+            "type": "boolean"
+          },
+          "widget": {
+            "type": "string",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "readOnly": true
+          },
+          "video_id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "video_is_vimeo": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "label": {
+            "type": "string",
+            "readOnly": true
+          },
+          "attachment_file": {
+            "type": "string",
+            "format": "uri",
+            "readOnly": true
+          },
+          "icon": {
+            "type": "string",
+            "readOnly": true
+          },
+          "category": {
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "anchor_id",
+          "anchor_type",
+          "attachment_file",
+          "category",
+          "icon",
+          "label",
+          "slug",
+          "url",
+          "video_id",
+          "video_is_vimeo"
+        ]
+      },
+      "PublicMainMenu": {
+        "type": "object",
+        "description": "Mixin for parsing restql query from request.\n\nNOTE: We are using `request.GET` instead of\n`request.query_params` because this might be\ncalled before DRF request is created(i.e from dispatch).\nThis means `request.query_params` might not be available\nwhen this mixin is used.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicMenuItem"
+            }
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "title": "Utworzony"
+          },
+          "modified": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "title": "Zmodyfikowany"
+          }
+        },
+        "required": ["created", "id", "items", "modified"]
+      },
+      "PublicMapArea": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "maxLength": 200
+          },
+          "title": {
+            "type": "string"
+          },
+          "x": {
+            "type": "integer",
+            "maximum": 2147483647,
+            "minimum": 0
+          },
+          "y": {
+            "type": "integer",
+            "maximum": 2147483647,
+            "minimum": 0
+          },
+          "width": {
+            "type": "integer",
+            "maximum": 2147483647,
+            "minimum": 0
+          },
+          "height": {
+            "type": "integer",
+            "maximum": 2147483647,
+            "minimum": 0
+          }
+        },
+        "required": ["height", "id", "width", "x", "y"]
+      },
+      "PublicMenuItem": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "readOnly": true
+          },
+          "link": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PublicLink"
+              }
+            ],
+            "nullable": true
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicSecondLevelMenuItem"
+            },
+            "nullable": true
+          }
+        },
+        "required": ["items", "label"]
+      },
+      "PublicMessage": {
+        "type": "object",
+        "properties": {
+          "first_name": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "last_name": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "maxLength": 254
+          },
+          "text": {
+            "type": "string",
+            "maxLength": 500
+          }
+        },
+        "required": ["email", "first_name", "last_name", "text"]
+      },
+      "PublicMessageRequest": {
+        "type": "object",
+        "properties": {
+          "first_name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "last_name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "minLength": 1,
+            "maxLength": 254
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        },
+        "required": ["email", "first_name", "last_name", "text"]
+      },
+      "PublicNewsletterAgreement": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "text": {
+            "type": "string",
+            "readOnly": true
+          },
+          "is_required": {
+            "type": "boolean"
+          }
+        },
+        "required": ["id", "text"]
+      },
+      "PublicNewsletterSettings": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "first_agreement": {
+            "$ref": "#/components/schemas/PublicNewsletterAgreement"
+          },
+          "second_agreement": {
+            "$ref": "#/components/schemas/PublicNewsletterAgreement"
+          },
+          "third_agreement": {
+            "$ref": "#/components/schemas/PublicNewsletterAgreement"
+          }
+        },
+        "required": [
+          "first_agreement",
+          "id",
+          "second_agreement",
+          "third_agreement"
+        ]
+      },
+      "PublicNewsletterWidget": {
+        "type": "object",
+        "properties": {
+          "margin_top": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginTopEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "margin_bottom": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginBottomEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "settings": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PublicNewsletterSettings"
+              }
+            ],
+            "readOnly": true
+          },
+          "resourcetype": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResourcetypeEnum"
+              }
+            ],
+            "default": "NewsletterWidget"
+          }
+        },
+        "required": ["id", "settings", "title"]
+      },
+      "PublicOurCustomersWidget": {
+        "type": "object",
+        "properties": {
+          "margin_top": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginTopEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "margin_bottom": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginBottomEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "logotypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicCustomerLogo"
+            }
+          },
+          "with_background": {
+            "type": "boolean"
+          },
+          "resourcetype": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResourcetypeEnum"
+              }
+            ],
+            "default": "OurCustomersWidget"
+          }
+        },
+        "required": ["id", "logotypes", "title"]
+      },
+      "PublicOurSolutionsItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "text": {
+            "type": "string",
+            "readOnly": true
+          },
+          "icon": {
+            "type": "string",
+            "readOnly": true
+          },
+          "link": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "required": ["icon", "id", "text", "title"]
+      },
+      "PublicOurSolutionsWidget": {
+        "type": "object",
+        "properties": {
+          "margin_top": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginTopEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "margin_bottom": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginBottomEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicOurSolutionsItem"
+            }
+          },
+          "cta_button": {
+            "$ref": "#/components/schemas/PublicCtaButton"
+          },
+          "resourcetype": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResourcetypeEnum"
+              }
+            ],
+            "default": "OurSolutionsWidget"
+          }
+        },
+        "required": ["cta_button", "id", "items", "title"]
+      },
+      "PublicPlace": {
+        "type": "object",
+        "description": "Mixin for parsing restql query from request.\n\nNOTE: We are using `request.GET` instead of\n`request.query_params` because this might be\ncalled before DRF request is created(i.e from dispatch).\nThis means `request.query_params` might not be available\nwhen this mixin is used.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "readOnly": true
+          },
+          "slug": {
+            "type": "string",
+            "readOnly": true,
+            "pattern": "^[-a-zA-Z0-9_]+$"
+          }
+        },
+        "required": ["id", "name", "slug"]
+      },
+      "PublicPricingWidget": {
+        "type": "object",
+        "properties": {
+          "margin_top": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginTopEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "margin_bottom": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginBottomEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "subtitle": {
+            "type": "string",
+            "readOnly": true
+          },
+          "package_title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "tooltip_visible": {
+            "type": "boolean"
+          },
+          "tooltip_button_text": {
+            "type": "string",
+            "readOnly": true
+          },
+          "tooltip_title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "tooltip_text": {
+            "type": "string",
+            "readOnly": true
+          },
+          "ranges": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicCustomersRangeWidget"
+            }
+          },
+          "resourcetype": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResourcetypeEnum"
+              }
+            ],
+            "default": "PricingWidget"
+          }
+        },
+        "required": [
+          "id",
+          "package_title",
+          "ranges",
+          "subtitle",
+          "title",
+          "tooltip_button_text",
+          "tooltip_text",
+          "tooltip_title"
+        ]
+      },
+      "PublicRelatedArticles": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "slug": {
+            "type": "string",
+            "readOnly": true
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "lead": {
+            "type": "string",
+            "readOnly": true
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicTag"
+            }
+          },
+          "image": {
+            "$ref": "#/components/schemas/PublicImage"
+          }
+        },
+        "required": ["id", "image", "lead", "slug", "tags", "title"]
+      },
+      "PublicSecondLevelFooterItem": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "readOnly": true
+          },
+          "link": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PublicLink"
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "required": ["label"]
+      },
+      "PublicSecondLevelMenuItem": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "readOnly": true
+          },
+          "link": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PublicLink"
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "required": ["label"]
+      },
+      "PublicSeoSettings": {
+        "type": "object",
+        "description": "Mixin for parsing restql query from request.\n\nNOTE: We are using `request.GET` instead of\n`request.query_params` because this might be\ncalled before DRF request is created(i.e from dispatch).\nThis means `request.query_params` might not be available\nwhen this mixin is used.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "meta_title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "og_title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "meta_title_template": {
+            "type": "string",
+            "readOnly": true
+          },
+          "meta_description": {
+            "type": "string",
+            "readOnly": true
+          },
+          "og_description": {
+            "type": "string",
+            "readOnly": true
+          },
+          "meta_keywords": {
+            "type": "string",
+            "readOnly": true
+          },
+          "og_image": {
+            "$ref": "#/components/schemas/PublicImage"
+          },
+          "favicon": {
+            "$ref": "#/components/schemas/PublicImage"
+          },
+          "favicon_ico": {
+            "type": "string",
+            "format": "uri"
+          },
+          "gtm_id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "gtag_id": {
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "favicon",
+          "favicon_ico",
+          "gtag_id",
+          "gtm_id",
+          "id",
+          "meta_description",
+          "meta_keywords",
+          "meta_title",
+          "meta_title_template",
+          "og_description",
+          "og_image",
+          "og_title"
+        ]
+      },
+      "PublicSimplePageResponse": {
+        "type": "object",
+        "description": "Mixin for parsing restql query from request.\n\nNOTE: We are using `request.GET` instead of\n`request.query_params` because this might be\ncalled before DRF request is created(i.e from dispatch).\nThis means `request.query_params` might not be available\nwhen this mixin is used.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "slug": {
+            "type": "string",
+            "readOnly": true
+          },
+          "slug_en": {
+            "type": "string",
+            "title": "Slug",
+            "maxLength": 50,
+            "pattern": "^[-a-zA-Z0-9_]+$"
+          },
+          "slug_pl": {
+            "type": "string",
+            "title": "Slug",
+            "maxLength": 50,
+            "pattern": "^[-a-zA-Z0-9_]+$"
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "category": {
+            "type": "string",
+            "readOnly": true
+          },
+          "widgets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicWidget"
+            }
+          },
+          "meta_description": {
+            "type": "string",
+            "readOnly": true
+          },
+          "site_title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "og_title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "og_description": {
+            "type": "string",
+            "readOnly": true
+          },
+          "og_image": {
+            "$ref": "#/components/schemas/PublicImage"
+          },
+          "modified": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "title": "Zmodyfikowany"
+          },
+          "meta_keywords": {
+            "type": "string",
+            "readOnly": true
+          },
+          "category_en": {
+            "type": "string"
+          },
+          "category_pl": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "category",
+          "category_en",
+          "category_pl",
+          "id",
+          "meta_description",
+          "meta_keywords",
+          "modified",
+          "og_description",
+          "og_image",
+          "og_title",
+          "site_title",
+          "slug",
+          "title",
+          "widgets"
+        ]
+      },
+      "PublicSiteSettings": {
+        "type": "object",
+        "description": "Mixin for parsing restql query from request.\n\nNOTE: We are using `request.GET` instead of\n`request.query_params` because this might be\ncalled before DRF request is created(i.e from dispatch).\nThis means `request.query_params` might not be available\nwhen this mixin is used.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "facebook_url": {
+            "type": "string",
+            "format": "uri",
+            "maxLength": 200
+          },
+          "twitter_url": {
+            "type": "string",
+            "format": "uri",
+            "maxLength": 200
+          },
+          "youtube_url": {
+            "type": "string",
+            "format": "uri",
+            "maxLength": 200
+          },
+          "instagram_url": {
+            "type": "string",
+            "format": "uri",
+            "maxLength": 200
+          },
+          "linkedin_url": {
+            "type": "string",
+            "format": "uri",
+            "maxLength": 200
+          },
+          "spotify_url": {
+            "type": "string",
+            "format": "uri",
+            "maxLength": 200
+          },
+          "apple_url": {
+            "type": "string",
+            "format": "uri",
+            "maxLength": 200
+          },
+          "google_url": {
+            "type": "string",
+            "format": "uri",
+            "maxLength": 200
+          },
+          "logotype_desktop": {
+            "$ref": "#/components/schemas/PublicImage"
+          },
+          "logotype_mobile": {
+            "$ref": "#/components/schemas/PublicImage"
+          },
+          "widget_margins": {
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "required": [
+          "id",
+          "logotype_desktop",
+          "logotype_mobile",
+          "widget_margins"
+        ]
+      },
+      "PublicSitemap": {
+        "type": "object",
+        "properties": {
+          "modified": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "slug_en": {
+            "type": "string"
+          },
+          "category_en": {
+            "type": "string"
+          },
+          "slug_pl": {
+            "type": "string"
+          },
+          "category_pl": {
+            "type": "string"
+          }
+        },
+        "required": ["modified"]
+      },
+      "PublicSliderItem": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "subtitle": {
+            "type": "string",
+            "readOnly": true
+          },
+          "link": {
+            "$ref": "#/components/schemas/PublicLink"
+          },
+          "video_is_vimeo": {
+            "type": "boolean"
+          },
+          "video_video_id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "image": {
+            "$ref": "#/components/schemas/PublicImage"
+          },
+          "cta_button": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PublicCtaButton"
+              }
+            ],
+            "nullable": true
+          },
+          "cta_button_second": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PublicCtaButton"
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "required": [
+          "cta_button",
+          "cta_button_second",
+          "image",
+          "link",
+          "subtitle",
+          "title",
+          "video_is_vimeo",
+          "video_video_id"
+        ]
+      },
+      "PublicSliderWidget": {
+        "type": "object",
+        "properties": {
+          "margin_top": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginTopEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "margin_bottom": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginBottomEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicSliderItem"
+            }
+          },
+          "resourcetype": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResourcetypeEnum"
+              }
+            ],
+            "default": "SliderWidget"
+          }
+        },
+        "required": ["id", "items"]
+      },
+      "PublicSubscribe": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "first_agreement": {
+            "type": "boolean",
+            "default": false
+          },
+          "second_agreement": {
+            "type": "boolean",
+            "default": false
+          },
+          "third_agreement": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "required": ["email"]
+      },
+      "PublicSubscribeRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "minLength": 1
+          },
+          "first_agreement": {
+            "type": "boolean",
+            "default": false
+          },
+          "second_agreement": {
+            "type": "boolean",
+            "default": false
+          },
+          "third_agreement": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "required": ["email"]
+      },
+      "PublicTag": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "title": "Nazwa",
+            "maxLength": 30
+          },
+          "color": {
+            "$ref": "#/components/schemas/TagColorEnum"
+          },
+          "protected_tag": {
+            "type": "boolean"
+          }
+        },
+        "required": ["id", "name"]
+      },
+      "PublicTextWidget": {
+        "type": "object",
+        "properties": {
+          "margin_top": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginTopEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "margin_bottom": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginBottomEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "text": {
+            "type": "string",
+            "readOnly": true
+          },
+          "resourcetype": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResourcetypeEnum"
+              }
+            ],
+            "default": "TextWidget"
+          }
+        },
+        "required": ["id", "text"]
+      },
+      "PublicTextWithSliderItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "text": {
+            "type": "string",
+            "readOnly": true
+          },
+          "position": {
+            "type": "string",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 255
+          },
+          "image": {
+            "$ref": "#/components/schemas/PublicImage"
+          }
+        },
+        "required": ["id", "image", "name", "position", "text"]
+      },
+      "PublicTextWithSliderWidget": {
+        "type": "object",
+        "properties": {
+          "margin_top": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginTopEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "margin_bottom": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginBottomEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicTextWithSliderItem"
+            }
+          },
+          "is_text_left": {
+            "type": "boolean"
+          },
+          "resourcetype": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResourcetypeEnum"
+              }
+            ],
+            "default": "TextWithSliderWidget"
+          }
+        },
+        "required": ["id", "items", "title"]
+      },
+      "PublicTileItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "text": {
+            "type": "string",
+            "readOnly": true
+          },
+          "icon": {
+            "type": "string",
+            "readOnly": true
+          }
+        },
+        "required": ["icon", "id", "text"]
+      },
+      "PublicTileWithTextCard": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "description": {
+            "type": "string",
+            "readOnly": true
+          },
+          "cta_button": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PublicCtaButton"
+              }
+            ],
+            "nullable": true
+          },
+          "labels": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicTileWithTextLabel"
+            }
+          },
+          "image": {
+            "$ref": "#/components/schemas/PublicImage"
+          }
+        },
+        "required": [
+          "cta_button",
+          "description",
+          "id",
+          "image",
+          "labels",
+          "title"
+        ]
+      },
+      "PublicTileWithTextLabel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "text": {
+            "type": "string",
+            "title": "Nazwa",
+            "maxLength": 30
+          },
+          "color": {
+            "$ref": "#/components/schemas/TagColorEnum"
+          }
+        },
+        "required": ["id", "text"]
+      },
+      "PublicTileWithTextWidget": {
+        "type": "object",
+        "properties": {
+          "margin_top": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginTopEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "margin_bottom": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginBottomEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicTileWithTextCard"
+            }
+          },
+          "cta_button": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PublicCtaButton"
+              }
+            ],
+            "nullable": true
+          },
+          "resourcetype": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResourcetypeEnum"
+              }
+            ],
+            "default": "TileWithTextWidget"
+          }
+        },
+        "required": ["cta_button", "id", "items", "title"]
+      },
+      "PublicTilesItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "readOnly": true
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "image": {
+            "$ref": "#/components/schemas/PublicImage"
+          },
+          "link": {
+            "$ref": "#/components/schemas/PublicLink"
+          }
+        },
+        "required": ["id", "image", "link", "title"]
+      },
+      "PublicTilesWidget": {
+        "type": "object",
+        "properties": {
+          "margin_top": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginTopEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "margin_bottom": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginBottomEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PublicTilesItem"
+            }
+          },
+          "cta_button": {
+            "$ref": "#/components/schemas/PublicCtaButton"
+          },
+          "resourcetype": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResourcetypeEnum"
+              }
+            ],
+            "default": "TilesWidget"
+          }
+        },
+        "required": ["cta_button", "id", "items", "title"]
+      },
+      "PublicTweetEmbedSerializer": {
+        "type": "object",
+        "properties": {
+          "margin_top": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginTopEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "margin_bottom": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginBottomEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "tweet_id": {
+            "type": "string",
+            "maxLength": 20
+          },
+          "resourcetype": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResourcetypeEnum"
+              }
+            ],
+            "default": "TweetEmbedWidget"
+          }
+        },
+        "required": ["id", "tweet_id"]
+      },
+      "PublicUpcomingEventsWidget": {
+        "type": "object",
+        "properties": {
+          "margin_top": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginTopEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "margin_bottom": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginBottomEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "allow_date_filter": {
+            "type": "boolean"
+          },
+          "allow_category_filter": {
+            "type": "boolean"
+          },
+          "resourcetype": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResourcetypeEnum"
+              }
+            ],
+            "default": "UpcomingEventsWidget"
+          }
+        },
+        "required": ["id", "title"]
+      },
+      "PublicVideoWidget": {
+        "type": "object",
+        "properties": {
+          "margin_top": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginTopEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "margin_bottom": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MarginBottomEnum"
+              },
+              {
+                "$ref": "#/components/schemas/BlankEnum"
+              }
+            ]
+          },
+          "id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "title": {
+            "type": "string",
+            "readOnly": true
+          },
+          "video_video_id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "video_is_vimeo": {
+            "type": "boolean"
+          },
+          "resourcetype": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResourcetypeEnum"
+              }
+            ],
+            "default": "VideoWidget"
+          }
+        },
+        "required": ["id", "title", "video_is_vimeo", "video_video_id"]
+      },
+      "PublicWidget": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/PublicArticleListWidget"
+          },
+          {
+            "$ref": "#/components/schemas/PublicBannerWithTextAndCtaWidget"
+          },
+          {
+            "$ref": "#/components/schemas/PublicBulletListWidget"
+          },
+          {
+            "$ref": "#/components/schemas/PublicBlockquoteWidget"
+          },
+          {
+            "$ref": "#/components/schemas/PublicBoxWithTextWidget"
+          },
+          {
+            "$ref": "#/components/schemas/PublicContactFormWidget"
+          },
+          {
+            "$ref": "#/components/schemas/PublicContactsWidget"
+          },
+          {
+            "$ref": "#/components/schemas/PublicCtaButtonWidget"
+          },
+          {
+            "$ref": "#/components/schemas/PublicFaqWidget"
+          },
+          {
+            "$ref": "#/components/schemas/PublicGalleryWidget"
+          },
+          {
+            "$ref": "#/components/schemas/PublicImageWidget"
+          },
+          {
+            "$ref": "#/components/schemas/PublicImageWithMultipleLinksWidget"
+          },
+          {
+            "$ref": "#/components/schemas/PublicImageWithTextWidget"
+          },
+          {
+            "$ref": "#/components/schemas/PublicImageTextListWidget"
+          },
+          {
+            "$ref": "#/components/schemas/PublicOurSolutionsWidget"
+          },
+          {
+            "$ref": "#/components/schemas/PublicOurCustomersWidget"
+          },
+          {
+            "$ref": "#/components/schemas/PublicTextWithSliderWidget"
+          },
+          {
+            "$ref": "#/components/schemas/PublicImageWithTilesWidget"
+          },
+          {
+            "$ref": "#/components/schemas/PublicImageWithAccordionsWidget"
+          },
+          {
+            "$ref": "#/components/schemas/PublicLineUpWidget"
+          },
+          {
+            "$ref": "#/components/schemas/PublicNewsletterWidget"
+          },
+          {
+            "$ref": "#/components/schemas/PublicPricingWidget"
+          },
+          {
+            "$ref": "#/components/schemas/PublicSliderWidget"
+          },
+          {
+            "$ref": "#/components/schemas/PublicTileWithTextWidget"
+          },
+          {
+            "$ref": "#/components/schemas/PublicTextWidget"
+          },
+          {
+            "$ref": "#/components/schemas/PublicTweetEmbedSerializer"
+          },
+          {
+            "$ref": "#/components/schemas/PublicTilesWidget"
+          },
+          {
+            "$ref": "#/components/schemas/PublicUpcomingEventsWidget"
+          },
+          {
+            "$ref": "#/components/schemas/PublicVideoWidget"
+          }
+        ],
+        "discriminator": {
+          "propertyName": "resourcetype",
+          "mapping": {
+            "ArticleListWidget": "#/components/schemas/PublicArticleListWidget",
+            "BannerWithTextAndCtaWidget": "#/components/schemas/PublicBannerWithTextAndCtaWidget",
+            "BulletListWidget": "#/components/schemas/PublicBulletListWidget",
+            "BlockquoteWidget": "#/components/schemas/PublicBlockquoteWidget",
+            "BoxWithTextWidget": "#/components/schemas/PublicBoxWithTextWidget",
+            "ContactFormWidget": "#/components/schemas/PublicContactFormWidget",
+            "ContactsWidget": "#/components/schemas/PublicContactsWidget",
+            "CtaButtonWidget": "#/components/schemas/PublicCtaButtonWidget",
+            "FaqWidget": "#/components/schemas/PublicFaqWidget",
+            "GalleryWidget": "#/components/schemas/PublicGalleryWidget",
+            "ImageWidget": "#/components/schemas/PublicImageWidget",
+            "ImageWithMultipleLinksWidget": "#/components/schemas/PublicImageWithMultipleLinksWidget",
+            "ImageWithTextWidget": "#/components/schemas/PublicImageWithTextWidget",
+            "ImageTextListWidget": "#/components/schemas/PublicImageTextListWidget",
+            "OurSolutionsWidget": "#/components/schemas/PublicOurSolutionsWidget",
+            "OurCustomersWidget": "#/components/schemas/PublicOurCustomersWidget",
+            "TextWithSliderWidget": "#/components/schemas/PublicTextWithSliderWidget",
+            "ImageWithTilesWidget": "#/components/schemas/PublicImageWithTilesWidget",
+            "ImageWithAccordionsWidget": "#/components/schemas/PublicImageWithAccordionsWidget",
+            "LineUpWidget": "#/components/schemas/PublicLineUpWidget",
+            "NewsletterWidget": "#/components/schemas/PublicNewsletterWidget",
+            "PricingWidget": "#/components/schemas/PublicPricingWidget",
+            "SliderWidget": "#/components/schemas/PublicSliderWidget",
+            "TileWithTextWidget": "#/components/schemas/PublicTileWithTextWidget",
+            "TextWidget": "#/components/schemas/PublicTextWidget",
+            "TweetEmbedWidget": "#/components/schemas/PublicTweetEmbedSerializer",
+            "TilesWidget": "#/components/schemas/PublicTilesWidget",
+            "UpcomingEventsWidget": "#/components/schemas/PublicUpcomingEventsWidget",
+            "VideoWidget": "#/components/schemas/PublicVideoWidget"
+          }
+        }
+      },
+      "ResourcetypeEnum": {
+        "enum": [
+          "ArticleListWidget",
+          "BannerWithTextAndCtaWidget",
+          "BulletListWidget",
+          "BlockquoteWidget",
+          "BoxWithTextWidget",
+          "ContactFormWidget",
+          "ContactsWidget",
+          "CtaButtonWidget",
+          "FaqWidget",
+          "GalleryWidget",
+          "ImageWidget",
+          "ImageWithMultipleLinksWidget",
+          "ImageWithTextWidget",
+          "ImageTextListWidget",
+          "OurSolutionsWidget",
+          "OurCustomersWidget",
+          "TextWithSliderWidget",
+          "ImageWithTilesWidget",
+          "ImageWithAccordionsWidget",
+          "LineUpWidget",
+          "NewsletterWidget",
+          "PricingWidget",
+          "SliderWidget",
+          "TileWithTextWidget",
+          "TextWidget",
+          "TweetEmbedWidget",
+          "TilesWidget",
+          "UpcomingEventsWidget",
+          "VideoWidget"
+        ],
+        "type": "string",
+        "description": "* `ArticleListWidget` - ArticleListWidget\n* `BannerWithTextAndCtaWidget` - BannerWithTextAndCtaWidget\n* `BulletListWidget` - BulletListWidget\n* `BlockquoteWidget` - BlockquoteWidget\n* `BoxWithTextWidget` - BoxWithTextWidget\n* `ContactFormWidget` - ContactFormWidget\n* `ContactsWidget` - ContactsWidget\n* `CtaButtonWidget` - CtaButtonWidget\n* `FaqWidget` - FaqWidget\n* `GalleryWidget` - GalleryWidget\n* `ImageWidget` - ImageWidget\n* `ImageWithMultipleLinksWidget` - ImageWithMultipleLinksWidget\n* `ImageWithTextWidget` - ImageWithTextWidget\n* `ImageTextListWidget` - ImageTextListWidget\n* `OurSolutionsWidget` - OurSolutionsWidget\n* `OurCustomersWidget` - OurCustomersWidget\n* `TextWithSliderWidget` - TextWithSliderWidget\n* `ImageWithTilesWidget` - ImageWithTilesWidget\n* `ImageWithAccordionsWidget` - ImageWithAccordionsWidget\n* `LineUpWidget` - LineUpWidget\n* `NewsletterWidget` - NewsletterWidget\n* `PricingWidget` - PricingWidget\n* `SliderWidget` - SliderWidget\n* `TileWithTextWidget` - TileWithTextWidget\n* `TextWidget` - TextWidget\n* `TweetEmbedWidget` - TweetEmbedWidget\n* `TilesWidget` - TilesWidget\n* `UpcomingEventsWidget` - UpcomingEventsWidget\n* `VideoWidget` - VideoWidget"
+      },
+      "TagColorEnum": {
+        "enum": [
+          "blue",
+          "green",
+          "navy",
+          "yellow",
+          "blue-light",
+          "green-light"
+        ],
+        "type": "string",
+        "description": "* `blue` - Niebieski\n* `green` - Zielony\n* `navy` - Granatowy\n* `yellow` - Żółty\n* `blue-light` - Jasnoniebieski\n* `green-light` - Jasnozielony"
+      },
+      "TypeEnum": {
+        "enum": ["spectacle", "concert"],
+        "type": "string",
+        "description": "* `spectacle` - Spektakl\n* `concert` - Koncert"
+      },
+      "ValueEnum": {
+        "enum": ["en", "pl"],
+        "type": "string",
+        "description": "* `en` - EN\n* `pl` - PL"
+      }
+    },
+    "securitySchemes": {
+      "cookieAuth": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "sessionid"
+      },
+      "knoxApiToken": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Token-based authentication with required prefix \"Token\""
+      }
+    }
+  }
+}
