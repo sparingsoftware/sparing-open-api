@@ -2,7 +2,7 @@ import { describe, expect, expectTypeOf, it, test } from 'vitest'
 import { generateFromConfig } from '../src/generateFromConfig'
 import fs from 'fs/promises'
 import path from 'path'
-import { PickKeys, postprocessQuery } from '../src/postprocessQuery'
+import { PickKeys, FetchKeys, postprocessQuery } from '../src/postprocessQuery'
 
 const GENERATED_DIRECTORY = 'test'
 const GENERATED_FILENAME = '__generated-api.ts'
@@ -55,5 +55,21 @@ describe('PickKeys', () => {
       { key1: { key2: true } }
     >
     expectTypeOf<MyObject>().toEqualTypeOf<{ key1: { key2: string } }>()
+  })
+})
+
+describe('FetchKeys', () => {
+  it('creates a type based on a ResponseModel', () => {
+    type MyFetchKeys = FetchKeys<{ key1: string }>
+    expectTypeOf<MyFetchKeys>().toEqualTypeOf<{
+      key1?: true | undefined
+    }>()
+  })
+  it('handles nested fields', () => {
+    type MyFetchKeys = FetchKeys<{ key1: string; key2: { key3: string } }>
+    expectTypeOf<MyFetchKeys>().toEqualTypeOf<{
+      key1?: true | undefined
+      key2?: true | undefined | { key3?: true | undefined }
+    }>()
   })
 })
