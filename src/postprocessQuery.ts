@@ -8,7 +8,7 @@ type MapObjectKeysToTrue<ObjectType extends Record<PropertyKey, any>> = {
     : true
 }
 type FetchKeysType = { [key in PropertyKey]: true | FetchKeysType }
-type FetchKeys<ResponseModel> = ResponseModel extends {
+export type FetchKeys<ResponseModel> = ResponseModel extends {
   count?: number
   results?: Array<infer DataModel>
 }
