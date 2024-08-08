@@ -1,8 +1,8 @@
-import { describe, expect, it, test } from 'vitest'
+import { describe, expect, expectTypeOf, it, test } from 'vitest'
 import { generateFromConfig } from '../src/generateFromConfig'
 import fs from 'fs/promises'
 import path from 'path'
-import { postprocessQuery } from '../src/postprocessQuery'
+import { PickKeys, postprocessQuery } from '../src/postprocessQuery'
 
 const GENERATED_DIRECTORY = 'test'
 const GENERATED_FILENAME = '__generated-api.ts'
@@ -38,5 +38,22 @@ describe('postprocessQuery', () => {
       fetchKeys: { key1: { key2: true }, key3: true }
     })
     expect(parsedQuery.query).toEqual('{key1{key2},key3}')
+  })
+})
+
+describe('PickKeys', () => {
+  it('picks keys from object', () => {
+    type MyObject = PickKeys<
+      { key1: string; key2: string; key3: number },
+      { key1: true; key3: true }
+    >
+    expectTypeOf<MyObject>().toEqualTypeOf<{ key1: string; key3: number }>()
+  })
+  it('handles nested fields', () => {
+    type MyObject = PickKeys<
+      { key1: { key2: string; key3: string } },
+      { key1: { key2: true } }
+    >
+    expectTypeOf<MyObject>().toEqualTypeOf<{ key1: { key2: string } }>()
   })
 })
