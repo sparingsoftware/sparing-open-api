@@ -55,7 +55,7 @@ type PickKeys<ResponseModel, FetchKeysType> = {} extends FetchKeysType
   ? NestedSafePick<DataModel, FetchKeysType>[]
   : NestedSafePick<ResponseModel, FetchKeysType>
 
-function postprocessQuery(query?: any) {
+export function postprocessQuery(query?: any) {
   if (!query) return query
 
   const parsedQuery = query

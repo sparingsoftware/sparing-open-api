@@ -1,7 +1,8 @@
-import { expect, test } from 'vitest'
+import { describe, expect, it, test } from 'vitest'
 import { generateFromConfig } from '../src/generateFromConfig'
 import fs from 'fs/promises'
 import path from 'path'
+import { postprocessQuery } from '../src/postprocessQuery'
 
 const GENERATED_DIRECTORY = 'test'
 const GENERATED_FILENAME = '__generated-api.ts'
@@ -19,4 +20,23 @@ test('generates api from config object', async () => {
 
   const generated = await fs.readFile(GENERATED_PATH, { encoding: 'utf-8' })
   expect(generated).toMatchSnapshot()
+})
+
+describe('postprocessQuery', () => {
+  it('creates query based on fetchKeys', () => {
+    const parsedQuery = postprocessQuery({ fetchKeys: { key1: true } })
+    expect(parsedQuery).toEqual({ query: '{key1}' })
+  })
+  it('handles nested fields', () => {
+    const parsedQuery = postprocessQuery({
+      fetchKeys: { key1: { key2: true } }
+    })
+    expect(parsedQuery.query).toEqual('{key1{key2}}')
+  })
+  it('handles multiple fields', () => {
+    const parsedQuery = postprocessQuery({
+      fetchKeys: { key1: { key2: true }, key3: true }
+    })
+    expect(parsedQuery.query).toEqual('{key1{key2},key3}')
+  })
 })
