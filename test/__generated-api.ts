@@ -1698,7 +1698,7 @@ type NestedSafePick<ResponseModel, FetchKeysType> = ResponseModel extends Array<
         : never
     }
 
-type PickKeys<ResponseModel, FetchKeysType> = {} extends FetchKeysType
+export type PickKeys<ResponseModel, FetchKeysType> = {} extends FetchKeysType
   ? ResponseModel
   : ResponseModel extends {
       count?: number
