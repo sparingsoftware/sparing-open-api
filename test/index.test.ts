@@ -3,6 +3,7 @@ import { generateFromConfig } from '../src/generateFromConfig'
 import fs from 'fs/promises'
 import path from 'path'
 import { PickKeys, FetchKeys, postprocessQuery } from '../src/postprocessQuery'
+import onCreateRoute from '../src/onCreateRoute'
 
 const GENERATED_DIRECTORY = 'test'
 const GENERATED_FILENAME = '__generated-api.ts'
@@ -71,5 +72,70 @@ describe('FetchKeys', () => {
       key1?: true | undefined
       key2?: true | undefined | { key3?: true | undefined }
     }>()
+  })
+})
+
+const clone = <T extends object>(object: T) =>
+  JSON.parse(JSON.stringify(object)) as T
+
+describe('onCreateRoute', () => {
+  it("doesn't modify a POST route", () => {
+    const routeData = {
+      responseBodySchema: { type: 'ExampleType' },
+      routeParams: { query: [] },
+      request: {
+        method: 'post'
+      }
+    }
+    const originalRouteData = clone(routeData)
+    expect(onCreateRoute(routeData)).toEqual(originalRouteData)
+  })
+  it('adds fetchKeys to `routeParams.query`', () => {
+    const routeData = {
+      responseBodySchema: { type: 'ExampleType' },
+      routeParams: { query: [] },
+      request: {
+        method: 'get'
+      }
+    }
+    expect(onCreateRoute(routeData).routeParams.query.at(-1)).toEqual({
+      name: 'fetchKeys',
+      required: false,
+      in: 'query',
+      description: 'Keys to fetch from endpoint',
+      schema: { type: 'FetchKeys<ExampleType>' },
+      type: 'FetchKeys<ExampleType>'
+    })
+  })
+  it("creates `request.query` if it doesn't exist", () => {
+    const routeData = {
+      responseBodySchema: { type: 'ExampleType' },
+      routeParams: { query: [] },
+      request: {
+        method: 'get'
+      }
+    }
+    expect(onCreateRoute(routeData).request.query).toEqual({
+      name: 'query',
+      optional: true,
+      type: `{ fetchKeys?: T }`
+    })
+  })
+  it('appends to `request.query` if it exists', () => {
+    const routeData = {
+      responseBodySchema: { type: 'ExampleType' },
+      routeParams: { query: [] },
+      request: {
+        query: {
+          name: 'query',
+          optional: true,
+          type: '{\n    myQueryParam: string,\n\n}'
+        },
+        method: 'get'
+      }
+    }
+    expect(onCreateRoute(routeData).request.query?.type).toEqual(
+      '{\n    myQueryParam: string,\n\nfetchKeys?: T }'
+    )
   })
 })

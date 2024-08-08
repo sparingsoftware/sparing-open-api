@@ -1,8 +1,9 @@
 import path from 'path'
-import { generateApi } from 'swagger-typescript-api'
+import { generateApi, ParsedRoute } from 'swagger-typescript-api'
 import prettierConfig from '@sparing-software/prettier-config'
 import fs from 'fs'
 import { default as optimizeTypesUtil } from './optimizeTypes'
+import onCreateRoute from './onCreateRoute'
 
 export type Config = {
   /**
@@ -82,43 +83,9 @@ export const generateFromConfig = ({
     // @ts-ignore
     include,
     hooks: {
-      onCreateRoute: data => {
-        // TODO Simplify types
-        const routeData = data as typeof data & {
-          responseBodySchema: { type: string }
-          routeParams: { query: object[] }
-          request: { query: { type: string; name: string; optional: boolean } }
-        }
-
-        if (routeData.request.method !== 'get') return routeData
-
-        const type = `FetchKeys<${routeData.responseBodySchema.type}>`
-
-        routeData.routeParams.query.push({
-          name: 'fetchKeys',
-          required: false,
-          in: 'query',
-          description: 'Keys to fetch from endpoint',
-          schema: { type },
-          type
-        })
-
-        if (routeData.request.query) {
-          const requestQuery = routeData.request.query
-          routeData.request.query = {
-            ...requestQuery,
-            type: requestQuery.type.slice(0, -1) + 'fetchKeys?: T }'
-          }
-        } else {
-          routeData.request.query = {
-            name: 'query',
-            optional: true,
-            type: `{ fetchKeys?: T }`
-          }
-        }
-
-        return routeData
-      }
+      onCreateRoute: onCreateRoute as unknown as (
+        routeData: ParsedRoute
+      ) => ParsedRoute
     }
   }).then(async ({ files }) => {
     if (!fs.existsSync(OUTPUT_PATH))
