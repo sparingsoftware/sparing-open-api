@@ -1,7 +1,8 @@
-import { expect, test } from 'vitest'
+import { describe, expect, expectTypeOf, it, test } from 'vitest'
 import { generateFromConfig } from '../src/generateFromConfig'
 import fs from 'fs/promises'
 import path from 'path'
+import { PickKeys, FetchKeys, postprocessQuery } from '../src/postprocessQuery'
 
 const GENERATED_DIRECTORY = 'test'
 const GENERATED_FILENAME = '__generated-api.ts'
@@ -19,4 +20,56 @@ test('generates api from config object', async () => {
 
   const generated = await fs.readFile(GENERATED_PATH, { encoding: 'utf-8' })
   expect(generated).toMatchSnapshot()
+})
+
+describe('postprocessQuery', () => {
+  it('creates query based on fetchKeys', () => {
+    const parsedQuery = postprocessQuery({ fetchKeys: { key1: true } })
+    expect(parsedQuery).toEqual({ query: '{key1}' })
+  })
+  it('handles nested fields', () => {
+    const parsedQuery = postprocessQuery({
+      fetchKeys: { key1: { key2: true } }
+    })
+    expect(parsedQuery.query).toEqual('{key1{key2}}')
+  })
+  it('handles multiple fields', () => {
+    const parsedQuery = postprocessQuery({
+      fetchKeys: { key1: { key2: true }, key3: true }
+    })
+    expect(parsedQuery.query).toEqual('{key1{key2},key3}')
+  })
+})
+
+describe('PickKeys', () => {
+  it('picks keys from object', () => {
+    type MyObject = PickKeys<
+      { key1: string; key2: string; key3: number },
+      { key1: true; key3: true }
+    >
+    expectTypeOf<MyObject>().toEqualTypeOf<{ key1: string; key3: number }>()
+  })
+  it('handles nested fields', () => {
+    type MyObject = PickKeys<
+      { key1: { key2: string; key3: string } },
+      { key1: { key2: true } }
+    >
+    expectTypeOf<MyObject>().toEqualTypeOf<{ key1: { key2: string } }>()
+  })
+})
+
+describe('FetchKeys', () => {
+  it('creates a type based on a ResponseModel', () => {
+    type MyFetchKeys = FetchKeys<{ key1: string }>
+    expectTypeOf<MyFetchKeys>().toEqualTypeOf<{
+      key1?: true | undefined
+    }>()
+  })
+  it('handles nested fields', () => {
+    type MyFetchKeys = FetchKeys<{ key1: string; key2: { key3: string } }>
+    expectTypeOf<MyFetchKeys>().toEqualTypeOf<{
+      key1?: true | undefined
+      key2?: true | undefined | { key3?: true | undefined }
+    }>()
+  })
 })

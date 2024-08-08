@@ -1666,7 +1666,7 @@ type MapObjectKeysToTrue<ObjectType extends Record<PropertyKey, any>> = {
     : true
 }
 type FetchKeysType = { [key in PropertyKey]: true | FetchKeysType }
-type FetchKeys<ResponseModel> = ResponseModel extends {
+export type FetchKeys<ResponseModel> = ResponseModel extends {
   count?: number
   results?: Array<infer DataModel>
 }
@@ -1698,7 +1698,7 @@ type NestedSafePick<ResponseModel, FetchKeysType> = ResponseModel extends Array<
         : never
     }
 
-type PickKeys<ResponseModel, FetchKeysType> = {} extends FetchKeysType
+export type PickKeys<ResponseModel, FetchKeysType> = {} extends FetchKeysType
   ? ResponseModel
   : ResponseModel extends {
       count?: number
@@ -1713,7 +1713,7 @@ type PickKeys<ResponseModel, FetchKeysType> = {} extends FetchKeysType
   ? NestedSafePick<DataModel, FetchKeysType>[]
   : NestedSafePick<ResponseModel, FetchKeysType>
 
-function postprocessQuery(query?: any) {
+export function postprocessQuery(query?: any) {
   if (!query) return query
 
   const parsedQuery = query
