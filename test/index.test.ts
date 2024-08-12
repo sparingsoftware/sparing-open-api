@@ -24,10 +24,6 @@ test('generates api from config object', async () => {
 })
 
 describe('postprocessQuery', () => {
-  it('creates query based on fetchKeys', () => {
-    const parsedQuery = postprocessQuery({ fetchKeys: { key1: true } })
-    expect(parsedQuery).toEqual({ query: '{key1}' })
-  })
   it('handles undefined query', () => {
     const parsedQuery = postprocessQuery(undefined)
     expect(parsedQuery).toBeUndefined()
@@ -40,50 +36,110 @@ describe('postprocessQuery', () => {
     const parsedQuery = postprocessQuery({ fetchKeys: undefined, key1: 1 })
     expect(parsedQuery).toEqual({ key1: 1 })
   })
-  it('handles nested fields', () => {
-    const parsedQuery = postprocessQuery({
-      fetchKeys: { key1: { key2: true } }
+  describe('based on FetchKeys object', () => {
+    it('creates query', () => {
+      const parsedQuery = postprocessQuery({ fetchKeys: { key1: true } })
+      expect(parsedQuery).toEqual({ query: '{key1}' })
     })
-    expect(parsedQuery.query).toEqual('{key1{key2}}')
+    it('handles nested fields', () => {
+      const parsedQuery = postprocessQuery({
+        fetchKeys: { key1: { key2: true } }
+      })
+      expect(parsedQuery?.query).toEqual('{key1{key2}}')
+    })
+    it('handles multiple fields', () => {
+      const parsedQuery = postprocessQuery({
+        fetchKeys: { key1: { key2: true }, key3: true }
+      })
+      expect(parsedQuery?.query).toEqual('{key1{key2},key3}')
+    })
+    it('handles multiple nested fields', () => {
+      const parsedQuery = postprocessQuery({
+        fetchKeys: { key1: { key2: true, key3: true } }
+      })
+      expect(parsedQuery?.query).toEqual('{key1{key2,key3}}')
+    })
   })
-  it('handles multiple fields', () => {
-    const parsedQuery = postprocessQuery({
-      fetchKeys: { key1: { key2: true }, key3: true }
+  describe('based on FetchKeys array', () => {
+    it('creates query', () => {
+      const parsedQuery = postprocessQuery({ fetchKeys: ['key1'] })
+      expect(parsedQuery).toEqual({ query: '{key1}' })
     })
-    expect(parsedQuery.query).toEqual('{key1{key2},key3}')
+    it('handles nested fields', () => {
+      const parsedQuery = postprocessQuery({
+        fetchKeys: ['key1.key2']
+      })
+      expect(parsedQuery?.query).toEqual('{key1{key2}}')
+    })
+    it('handles multiple fields', () => {
+      const parsedQuery = postprocessQuery({
+        fetchKeys: ['key1.key2', 'key3']
+      })
+      expect(parsedQuery?.query).toEqual('{key1{key2},key3}')
+    })
+    it('handles multiple nested fields', () => {
+      const parsedQuery = postprocessQuery({
+        fetchKeys: ['key1.key2', 'key1.key3']
+      })
+      expect(parsedQuery?.query).toEqual('{key1{key2,key3}}')
+    })
   })
 })
 
 describe('PickKeys', () => {
-  it('picks keys from object', () => {
-    type MyObject = PickKeys<
-      { key1: string; key2: string; key3: number },
-      { key1: true; key3: true }
-    >
-    expectTypeOf<MyObject>().toEqualTypeOf<{ key1: string; key3: number }>()
+  describe('based on FetchKeys object', () => {
+    it('picks keys from object', () => {
+      type MyObject = PickKeys<
+        { key1: string; key2: string; key3: number },
+        { key1: true; key3: true }
+      >
+      expectTypeOf<MyObject>().toEqualTypeOf<{ key1: string; key3: number }>()
+    })
+    it('handles nested fields', () => {
+      type MyObject = PickKeys<
+        { key1: { key2: string; key3: string } },
+        { key1: { key2: true } }
+      >
+      expectTypeOf<MyObject>().toEqualTypeOf<{ key1: { key2: string } }>()
+    })
   })
-  it('handles nested fields', () => {
-    type MyObject = PickKeys<
-      { key1: { key2: string; key3: string } },
-      { key1: { key2: true } }
-    >
-    expectTypeOf<MyObject>().toEqualTypeOf<{ key1: { key2: string } }>()
+  describe('based on FetchKeys array', () => {
+    it('picks keys from object', () => {
+      type MyObject = PickKeys<
+        { key1: string; key2: string; key3: number },
+        ['key1', 'key3']
+      >
+      expectTypeOf<MyObject>().toEqualTypeOf<{ key1: string; key3: number }>()
+    })
+    it('handles nested fields', () => {
+      type MyObject = PickKeys<
+        { key1: { key2: string; key3: string } },
+        ['key1.key2']
+      >
+      expectTypeOf<MyObject>().toEqualTypeOf<{ key1: { key2: string } }>()
+    })
   })
 })
 
 describe('FetchKeys', () => {
   it('creates a type based on a ResponseModel', () => {
     type MyFetchKeys = FetchKeys<{ key1: string }>
-    expectTypeOf<MyFetchKeys>().toEqualTypeOf<{
-      key1?: true | undefined
-    }>()
+    expectTypeOf<MyFetchKeys>().toEqualTypeOf<
+      | {
+          key1?: true | undefined
+        }
+      | 'key1'[]
+    >()
   })
   it('handles nested fields', () => {
     type MyFetchKeys = FetchKeys<{ key1: string; key2: { key3: string } }>
-    expectTypeOf<MyFetchKeys>().toEqualTypeOf<{
-      key1?: true | undefined
-      key2?: true | undefined | { key3?: true | undefined }
-    }>()
+    expectTypeOf<MyFetchKeys>().toEqualTypeOf<
+      | {
+          key1?: true | undefined
+          key2?: true | undefined | { key3?: true | undefined }
+        }
+      | ('key1' | 'key2' | 'key2.key3')[]
+    >()
   })
 })
 
