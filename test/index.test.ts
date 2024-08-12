@@ -28,6 +28,18 @@ describe('postprocessQuery', () => {
     const parsedQuery = postprocessQuery({ fetchKeys: { key1: true } })
     expect(parsedQuery).toEqual({ query: '{key1}' })
   })
+  it('handles undefined query', () => {
+    const parsedQuery = postprocessQuery(undefined)
+    expect(parsedQuery).toBeUndefined()
+  })
+  it('handles undefined fetchKeys', () => {
+    const parsedQuery = postprocessQuery({ fetchKeys: undefined })
+    expect(parsedQuery).toEqual({})
+  })
+  it('keeps other parameters', () => {
+    const parsedQuery = postprocessQuery({ fetchKeys: undefined, key1: 1 })
+    expect(parsedQuery).toEqual({ key1: 1 })
+  })
   it('handles nested fields', () => {
     const parsedQuery = postprocessQuery({
       fetchKeys: { key1: { key2: true } }
