@@ -102,6 +102,16 @@ describe('PickKeys', () => {
       >
       expectTypeOf<MyObject>().toEqualTypeOf<{ key1: { key2: string } }>()
     })
+    it('handles pagination', () => {
+      type MyObject = PickKeys<
+        { results: [{ key1: string; key2: string }]; count: number },
+        { key1: true }
+      >
+      expectTypeOf<MyObject>().toEqualTypeOf<{
+        results: { key1: string }[]
+        count: number
+      }>()
+    })
   })
   describe('based on FetchKeys array', () => {
     it('picks keys from object', () => {
@@ -117,6 +127,16 @@ describe('PickKeys', () => {
         ['key1.key2']
       >
       expectTypeOf<MyObject>().toEqualTypeOf<{ key1: { key2: string } }>()
+    })
+    it('handles pagination', () => {
+      type MyObject = PickKeys<
+        { results: [{ key1: string; key2: string }]; count: number },
+        ['key1']
+      >
+      expectTypeOf<MyObject>().toEqualTypeOf<{
+        results: { key1: string }[]
+        count: number
+      }>()
     })
   })
 })
@@ -139,6 +159,15 @@ describe('FetchKeys', () => {
           key2?: true | undefined | { key3?: true | undefined }
         }
       | ('key1' | 'key2' | 'key2.key3')[]
+    >()
+  })
+  it('handles pagination', () => {
+    type MyFetchKeys = FetchKeys<{ results: { key1: string }[]; count: number }>
+    expectTypeOf<MyFetchKeys>().toEqualTypeOf<
+      | {
+          key1?: true | undefined
+        }
+      | 'key1'[]
     >()
   })
 })
