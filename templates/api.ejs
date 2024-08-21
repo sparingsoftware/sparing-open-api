@@ -163,7 +163,23 @@ type Flatten<T> = T extends any[] ? T[number] : T
     [K in keyof T]: T[K]
   }
   
+  export function validateArrayFetchKeys(paths: string[]) {
+    if (paths.length !== new Set(paths).size)
+      throw new Error(`Duplicate key in fetchKeys:
+  ${JSON.stringify(paths, null, 2)}`)
+    paths.forEach((path, index) =>
+      paths.forEach((otherPath, otherIndex) => {
+        if (otherPath.startsWith(path) && index !== otherIndex)
+          throw new Error(
+            `Invalid duplicate nesting in fetchKeys: ${path} and ${otherPath}`
+          )
+      })
+    )
+  }
+
   function getFetchKeysFromArray(paths: string[]) {
+    if (typeof process !== 'undefined' && process.env.NODE_ENV !== 'production')
+      validateArrayFetchKeys(paths)
     const fetchKeys: FetchKeysType = {}
     for (const path of paths) {
       let currentObject = fetchKeys
