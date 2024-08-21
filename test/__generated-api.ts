@@ -1742,7 +1742,12 @@ type DotNotationKeys<T, P extends string = ''> = T extends object
       }[keyof T]
   : P
 
-type FetchKeysArray<T> = DotNotationKeys<T>[]
+type FetchKeysArray<ResponseModel> = ResponseModel extends {
+  results?: Array<infer DataModel>
+  count?: number
+}
+  ? DotNotationKeys<DataModel>[]
+  : DotNotationKeys<ResponseModel>[]
 
 type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
   k: infer I
@@ -1764,13 +1769,26 @@ type PickByPath<T, Path extends any[]> = Path extends [infer P, ...infer Rest]
     : unknown
   : T
 
-type PickKeysFromArray<T, Keys extends string[]> = Merge<
-  UnionToIntersection<
-    {
-      [K in keyof Keys]: PickByPath<T, Split<Extract<Keys[K], string>, '.'>>
-    }[number]
-  >
+type ObjectWithKeysFromArray<T, Keys extends string[]> = UnionToIntersection<
+  {
+    [K in keyof Keys]: PickByPath<T, Split<Extract<Keys[K], string>, '.'>>
+  }[number]
 >
+
+type OverrideField<Object, Field extends keyof Object, FieldType> = Merge<
+  Omit<Object, Field> & { [k in Field]: FieldType }
+>
+
+type PickKeysFromArray<
+  ResponseModel,
+  Keys extends string[]
+> = ResponseModel extends { results?: Array<infer DataModel>; count?: number }
+  ? OverrideField<
+      ResponseModel,
+      'results',
+      ObjectWithKeysFromArray<DataModel, Keys>[]
+    >
+  : Merge<ObjectWithKeysFromArray<ResponseModel, Keys>>
 
 type Merge<T> = {
   [K in keyof T]: T[K]
