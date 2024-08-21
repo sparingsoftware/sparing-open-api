@@ -42,6 +42,7 @@
     "@sparing-software/commitlint-config": "^1.0.0",
     "@sparing-software/prettier-config": "^1.0.0",
     "@types/node": "^18.16.0",
+    "axios": "^1.7.4",
     "husky": "^8.0.0",
     "is-ci": "^3.0.1",
     "lint-staged": "^13.2.0",
