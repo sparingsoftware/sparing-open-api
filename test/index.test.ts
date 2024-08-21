@@ -2,7 +2,7 @@ import { describe, expect, expectTypeOf, it, test } from 'vitest'
 import { generateFromConfig } from '../src/generateFromConfig'
 import fs from 'fs/promises'
 import path from 'path'
-import { PickKeys, FetchKeys, postprocessQuery } from './__generated-api'
+import { PickKeys, FetchKeys, postprocessQuery, Api } from './__generated-api'
 import onCreateRoute from '../src/onCreateRoute'
 
 const GENERATED_DIRECTORY = 'test'
@@ -234,5 +234,24 @@ describe('onCreateRoute', () => {
     expect(onCreateRoute(routeData).request.query?.type).toEqual(
       '{\n    myQueryParam: string,\n\nfetchKeys?: T }'
     )
+  })
+})
+
+describe('API class', () => {
+  const api = new Api()
+
+  it('has correct method type', () => {
+    const wrapper = (fetchKeys: ['author.id']) =>
+      api.public.publicPagesArticlesList({ fetchKeys })
+    type Response = Awaited<ReturnType<typeof wrapper>>
+    expectTypeOf<Response>().toEqualTypeOf<{
+      count: number
+      next?: (string | null) | undefined
+      previous?: (string | null) | undefined
+      page_size?: number | undefined
+      results: {
+        author: { id: string }
+      }[]
+    }>()
   })
 })
