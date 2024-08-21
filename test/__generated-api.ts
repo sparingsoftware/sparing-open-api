@@ -1661,7 +1661,9 @@ type ChangeTypeOfKeys<T extends object, Keys extends keyof T, NewType> = {
   [key in keyof T]: key extends Keys ? NewType : T[key]
 }
 type MapObjectKeysToTrue<ObjectType extends Record<PropertyKey, any>> = {
-  [key in keyof ObjectType]?: ObjectType[key] extends Record<PropertyKey, any>
+  [key in keyof ObjectType]?: IsAny<ObjectType[key]> extends true
+    ? true
+    : ObjectType[key] extends Record<PropertyKey, any>
     ? true | MapObjectKeysToTrue<Flatten<ObjectType[key]>>
     : true
 }
@@ -1727,8 +1729,11 @@ function getStringifiedQueryKeys(keys: FetchKeysObject<unknown>) {
 }
 
 type IsArray<T> = T extends Array<any> ? true : false
+type IsAny<T> = 0 extends 1 & T ? true : false
 
-type DotNotationKeys<T, P extends string = ''> = T extends object
+type DotNotationKeys<T, P extends string = ''> = IsAny<T> extends true
+  ? P
+  : T extends object
   ? IsArray<T> extends true
     ? P extends ''
       ? never
@@ -1775,18 +1780,17 @@ type ObjectWithKeysFromArray<T, Keys extends string[]> = UnionToIntersection<
   }[number]
 >
 
-type OverrideField<Object, Field extends keyof Object, FieldType> = Merge<
-  Omit<Object, Field> & { [k in Field]: FieldType }
->
+type Modify<T, R> = Omit<T, keyof R> & R
 
 type PickKeysFromArray<
   ResponseModel,
   Keys extends string[]
 > = ResponseModel extends { results?: Array<infer DataModel>; count?: number }
-  ? OverrideField<
-      ResponseModel,
-      'results',
-      ObjectWithKeysFromArray<DataModel, Keys>[]
+  ? Merge<
+      Modify<
+        ResponseModel,
+        { results: ObjectWithKeysFromArray<DataModel, Keys>[] }
+      >
     >
   : Merge<ObjectWithKeysFromArray<ResponseModel, Keys>>
 
