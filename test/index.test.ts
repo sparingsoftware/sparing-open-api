@@ -170,6 +170,15 @@ describe('FetchKeys', () => {
       | 'key1'[]
     >()
   })
+  it('handles any', () => {
+    type MyFetchKeys = FetchKeys<{ key1: any }>
+    expectTypeOf<MyFetchKeys>().toEqualTypeOf<
+      | {
+          key1?: true | undefined
+        }
+      | 'key1'[]
+    >()
+  })
 })
 
 const clone = <T extends object>(object: T) =>
