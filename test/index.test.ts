@@ -2,7 +2,7 @@ import { describe, expect, expectTypeOf, it, test } from 'vitest'
 import { generateFromConfig } from '../src/generateFromConfig'
 import fs from 'fs/promises'
 import path from 'path'
-import { PickKeys, FetchKeys, postprocessQuery } from '../src/postprocessQuery'
+import { PickKeys, FetchKeys, postprocessQuery } from './__generated-api'
 import onCreateRoute from '../src/onCreateRoute'
 
 const GENERATED_DIRECTORY = 'test'
