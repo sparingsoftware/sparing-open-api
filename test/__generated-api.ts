@@ -1785,7 +1785,9 @@ type Modify<T, R> = Omit<T, keyof R> & R
 type PickKeysFromArray<
   ResponseModel,
   Keys extends string[]
-> = ResponseModel extends { results?: Array<infer DataModel>; count?: number }
+> = Keys extends never[]
+  ? ResponseModel
+  : ResponseModel extends { results?: Array<infer DataModel>; count?: number }
   ? Merge<
       Modify<
         ResponseModel,
