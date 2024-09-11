@@ -126,6 +126,13 @@ describe('PickKeys', () => {
       type ResponseModel = { key1: string }
       expectTypeOf<PickKeys<ResponseModel, {}>>().toEqualTypeOf<ResponseModel>()
     })
+    it('handles arrays', () => {
+      type DataModel = { key1: string; key2: string }
+      type ResponseModel = DataModel[]
+      expectTypeOf<PickKeys<ResponseModel, { key1: true }>>().toEqualTypeOf<
+        { key1: string }[]
+      >()
+    })
   })
   describe('based on FetchKeys array', () => {
     it('picks keys from object', () => {
@@ -157,6 +164,13 @@ describe('PickKeys', () => {
       expectTypeOf<
         PickKeys<ResponseModel, never[]>
       >().toEqualTypeOf<ResponseModel>()
+    })
+    it('handles arrays', () => {
+      type DataModel = { key1: string; key2: string }
+      type ResponseModel = DataModel[]
+      expectTypeOf<PickKeys<ResponseModel, ['key1']>>().toEqualTypeOf<
+        { key1: string }[]
+      >()
     })
   })
 })
@@ -197,6 +211,12 @@ describe('FetchKeys', () => {
           key1?: true | undefined
         }
       | 'key1'[]
+    >()
+  })
+  it('handles arrays', () => {
+    type MyFetchKeys = FetchKeys<{ key1: string }[]>
+    expectTypeOf<MyFetchKeys>().toEqualTypeOf<
+      { key1?: true | undefined } | 'key1'[]
     >()
   })
 })
