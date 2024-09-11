@@ -149,15 +149,16 @@ type Flatten<T> = T extends any[] ? T[number] : T
   
   type Modify<T, R> = Omit<T, keyof R> & R;
   
-  type PickKeysFromArray<
-    ResponseModel,
-    Keys extends string[]
-  > = ResponseModel extends { results?: Array<infer DataModel>; count?: number }
-    ? Merge<Modify<
+  type PickKeysFromArray<ResponseModel, Keys extends string[]> = Keys extends never[]
+  ? ResponseModel
+  : ResponseModel extends { results?: Array<infer DataModel>; count?: number }
+  ? Merge<
+      Modify<
         ResponseModel,
         { results: ObjectWithKeysFromArray<DataModel, Keys>[] }
-      >>
-    : Merge<ObjectWithKeysFromArray<ResponseModel, Keys>>
+      >
+    >
+  : Merge<ObjectWithKeysFromArray<ResponseModel, Keys>>
   
   type Merge<T> = {
     [K in keyof T]: T[K]
