@@ -122,6 +122,10 @@ describe('PickKeys', () => {
         count: number
       }>()
     })
+    it('handles empty object', () => {
+      type ResponseModel = { key1: string }
+      expectTypeOf<PickKeys<ResponseModel, {}>>().toEqualTypeOf<ResponseModel>()
+    })
   })
   describe('based on FetchKeys array', () => {
     it('picks keys from object', () => {
@@ -147,6 +151,12 @@ describe('PickKeys', () => {
         results: { key1: string }[]
         count: number
       }>()
+    })
+    it('handles empty array', () => {
+      type ResponseModel = { key1: string }
+      expectTypeOf<
+        PickKeys<ResponseModel, never[]>
+      >().toEqualTypeOf<ResponseModel>()
     })
   })
 })
