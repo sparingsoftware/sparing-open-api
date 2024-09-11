@@ -260,9 +260,9 @@ describe('API class', () => {
   const api = new Api()
 
   it('has correct method type', () => {
-    const wrapper = (fetchKeys: ['author.id']) =>
-      api.public.publicPagesArticlesList({ fetchKeys })
-    type Response = Awaited<ReturnType<typeof wrapper>>
+    type Response = Awaited<
+      ReturnType<typeof api.public.publicPagesArticlesList<['author.id']>>
+    >
     expectTypeOf<Response>().toEqualTypeOf<{
       count: number
       next?: (string | null) | undefined
