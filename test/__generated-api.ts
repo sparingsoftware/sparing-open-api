@@ -1747,10 +1747,12 @@ type DotNotationKeys<T, P extends string = ''> = IsAny<T> extends true
       }[keyof T]
   : P
 
-type FetchKeysArray<ResponseModel> = ResponseModel extends {
-  results?: Array<infer DataModel>
-  count?: number
-}
+type FetchKeysArray<ResponseModel> = ResponseModel extends (infer DataModel)[]
+  ? DotNotationKeys<DataModel>[]
+  : ResponseModel extends {
+      results?: Array<infer DataModel>
+      count?: number
+    }
   ? DotNotationKeys<DataModel>[]
   : DotNotationKeys<ResponseModel>[]
 
@@ -1787,6 +1789,8 @@ type PickKeysFromArray<
   Keys extends string[]
 > = Keys extends never[]
   ? ResponseModel
+  : ResponseModel extends (infer DataModel)[]
+  ? Merge<ObjectWithKeysFromArray<DataModel, Keys>>[]
   : ResponseModel extends { results?: Array<infer DataModel>; count?: number }
   ? Merge<
       Modify<
