@@ -1730,6 +1730,7 @@ function getStringifiedQueryKeys(keys: FetchKeysObject<unknown>) {
 
 type IsArray<T> = T extends Array<any> ? true : false
 type IsAny<T> = 0 extends 1 & T ? true : false
+type ExcludeUndefined<T> = T extends undefined ? never : T
 
 type DotNotationKeys<T, P extends string = ''> = IsAny<T> extends true
   ? P
@@ -1739,10 +1740,17 @@ type DotNotationKeys<T, P extends string = ''> = IsAny<T> extends true
       ? never
       : P
     : {
-        [K in keyof T]: K extends string
+        [K in keyof T]-?: ExcludeUndefined<K> extends string // Exclude undefined keys
           ? P extends ''
-            ? K | DotNotationKeys<T[K], K>
-            : `${P}.${K}` | DotNotationKeys<T[K], `${P}.${K}`>
+            ?
+                | ExcludeUndefined<K>
+                | DotNotationKeys<ExcludeUndefined<T[K]>, ExcludeUndefined<K>>
+            :
+                | `${P}.${ExcludeUndefined<K>}`
+                | DotNotationKeys<
+                    ExcludeUndefined<T[K]>,
+                    `${P}.${ExcludeUndefined<K>}`
+                  >
           : never
       }[keyof T]
   : P
@@ -1787,7 +1795,7 @@ type Modify<T, R> = Omit<T, keyof R> & R
 type PickKeysFromArray<
   ResponseModel,
   Keys extends string[]
-> = Keys extends never[]
+> = never[] extends Keys
   ? ResponseModel
   : ResponseModel extends (infer DataModel)[]
   ? Merge<ObjectWithKeysFromArray<DataModel, Keys>>[]
