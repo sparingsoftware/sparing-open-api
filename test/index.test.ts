@@ -97,6 +97,11 @@ describe('postprocessQuery', () => {
 })
 
 describe('PickKeys', () => {
+  it("doesn't change the response model by default", () => {
+    type ResponseModel = { key1?: string }
+    type WithPickKeys = PickKeys<ResponseModel, FetchKeys<ResponseModel>>
+    expectTypeOf<WithPickKeys>().toEqualTypeOf<ResponseModel>()
+  })
   describe('based on FetchKeys object', () => {
     it('picks keys from object', () => {
       type MyObject = PickKeys<
@@ -132,6 +137,12 @@ describe('PickKeys', () => {
       expectTypeOf<PickKeys<ResponseModel, { key1: true }>>().toEqualTypeOf<
         { key1: string }[]
       >()
+    })
+    it('handles optional fields', () => {
+      type ResponseModel = { key1?: string }
+      expectTypeOf<PickKeys<ResponseModel, { key1: true }>>().toEqualTypeOf<{
+        key1: string | undefined
+      }>()
     })
   })
   describe('based on FetchKeys array', () => {
@@ -171,6 +182,12 @@ describe('PickKeys', () => {
       expectTypeOf<PickKeys<ResponseModel, ['key1']>>().toEqualTypeOf<
         { key1: string }[]
       >()
+    })
+    it('handles optional fields', () => {
+      type ResponseModel = { key1?: string }
+      expectTypeOf<PickKeys<ResponseModel, ['key1']>>().toEqualTypeOf<{
+        key1: string | undefined
+      }>()
     })
   })
 })
