@@ -193,7 +193,7 @@ type FetchKeysArray<ResponseModel> = ResponseModel extends (infer DataModel)[]
   }
 
   function getFetchKeysFromArray(paths: string[]) {
-    if (typeof process !== 'undefined' && process.env.NODE_ENV !== 'production')
+    if (process.env.NODE_ENV !== 'production')
       validateArrayFetchKeys(paths)
     const fetchKeys: FetchKeysType = {}
     for (const path of paths) {

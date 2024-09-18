@@ -1827,8 +1827,7 @@ export function validateArrayFetchKeys(paths: string[]) {
 }
 
 function getFetchKeysFromArray(paths: string[]) {
-  if (typeof process !== 'undefined' && process.env.NODE_ENV !== 'production')
-    validateArrayFetchKeys(paths)
+  if (process.env.NODE_ENV !== 'production') validateArrayFetchKeys(paths)
   const fetchKeys: FetchKeysType = {}
   for (const path of paths) {
     let currentObject = fetchKeys
