@@ -1,8 +1,6 @@
 {
   "compilerOptions": {
     "strict": true,
-    "outDir": "dist",
-    "rootDir": "src",
     "target": "es2022",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
@@ -13,7 +11,5 @@
     "declaration": true,
     "skipLibCheck": true,
     "allowJs": true
-  },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "templates"]
+  }
 }
