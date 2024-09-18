@@ -23,81 +23,214 @@ const descriptionLines = _.compact([
   info.description && " ",
   info.description && _.replace(formatDescription(info.description), /\n/g, "\n * "),
 ]);
-
 %>
 
-type Flatten<T> = T extends any[] ? T[number] : T;
-type ChangeTypeOfKeys<T extends object, Keys extends keyof T, NewType> = { [key in keyof T]: key extends Keys ? NewType : T[key] };
-type MapObjectKeysToTrue<ObjectType extends Record<PropertyKey, any>> = {
-  [key in keyof ObjectType]?: ObjectType[key] extends Record<PropertyKey, any>
-    ? true | MapObjectKeysToTrue<Flatten<ObjectType[key]>>
-    : true
-}
-type FetchKeysType = { [key in PropertyKey]: true | FetchKeysType }
-type FetchKeys<ResponseModel> = ResponseModel extends { count?: number, results?: Array<infer DataModel> }
-  ? DataModel extends Record<PropertyKey, any>
-    ? MapObjectKeysToTrue<DataModel>
-    : DataModel
-  : ResponseModel extends Record<PropertyKey, any>
-  ? MapObjectKeysToTrue<Flatten<ResponseModel>>
-  : ResponseModel;
-
-type NestedSafePick<ResponseModel, FetchKeysType> = ResponseModel extends Array<infer Model>
-  ? NestedSafePick<Model, FetchKeysType>[]
-  : {
-      [key in keyof FetchKeysType]: FetchKeysType[key] extends Record<PropertyKey, any>
-        ? key extends keyof ResponseModel
-          ? ResponseModel[key] extends Array<infer DataModel>
-            ? NestedSafePick<DataModel, FetchKeysType[key]>[]
-            : NestedSafePick<ResponseModel[key], FetchKeysType[key]>
-          : never
-        : key extends keyof ResponseModel
+type Flatten<T> = T extends any[] ? T[number] : T
+  type ChangeTypeOfKeys<T extends object, Keys extends keyof T, NewType> = {
+    [key in keyof T]: key extends Keys ? NewType : T[key]
+  }
+  type MapObjectKeysToTrue<ObjectType extends Record<PropertyKey, any>> = {
+    [key in keyof ObjectType]?: IsAny<ObjectType[key]> extends true
+      ? true
+      : ObjectType[key] extends Record<PropertyKey, any>
+      ? true | MapObjectKeysToTrue<Flatten<ObjectType[key]>>
+      : true
+  }
+  type FetchKeysType = { [key in PropertyKey]: true | FetchKeysType }
+  type FetchKeysObject<ResponseModel> = ResponseModel extends {
+    count?: number
+    results?: Array<infer DataModel>
+  }
+    ? DataModel extends Record<PropertyKey, any>
+      ? MapObjectKeysToTrue<DataModel>
+      : DataModel
+    : ResponseModel extends Record<PropertyKey, any>
+    ? MapObjectKeysToTrue<Flatten<ResponseModel>>
+    : ResponseModel
+  
+  type NestedSafePick<ResponseModel, FetchKeysType> = ResponseModel extends Array<
+    infer Model
+  >
+    ? NestedSafePick<Model, FetchKeysType>[]
+    : {
+        [key in keyof FetchKeysType]: FetchKeysType[key] extends Record<
+          PropertyKey,
+          any
+        >
+          ? key extends keyof ResponseModel
+            ? ResponseModel[key] extends Array<infer DataModel>
+              ? NestedSafePick<DataModel, FetchKeysType[key]>[]
+              : NestedSafePick<ResponseModel[key], FetchKeysType[key]>
+            : never
+          : key extends keyof ResponseModel
           ? ResponseModel[key] extends Array<infer DataModel>
             ? DataModel[]
             : ResponseModel[key]
           : never
-    };
-
-type PickKeys<ResponseModel, FetchKeysType> = {} extends FetchKeysType
-  ? ResponseModel
-  : ResponseModel extends {
-    count?: number
-    results?: Array<infer DataModel>
-  }
+      }
+  
+  type PickKeysFromObject<ResponseModel, FetchKeysType> = {} extends FetchKeysType
+    ? ResponseModel
+    : ResponseModel extends {
+        count?: number
+        results?: Array<infer DataModel>
+      }
     ? ChangeTypeOfKeys<
         ResponseModel,
         'results',
         NestedSafePick<DataModel, FetchKeysType>[]
       >
     : ResponseModel extends Array<infer DataModel>
-      ? NestedSafePick<DataModel, FetchKeysType>[]
-      : NestedSafePick<ResponseModel, FetchKeysType>
+    ? NestedSafePick<DataModel, FetchKeysType>[]
+    : NestedSafePick<ResponseModel, FetchKeysType>
+  
+  function getStringifiedQueryKeys(keys: FetchKeysObject<unknown>) {
+    let query = '{'
+    Object.entries(keys as FetchKeysType).forEach(([key, value], index) => {
+      if (typeof value === 'object') {
+        const keyToAdd = `${key}${getStringifiedQueryKeys(value)}`
+        query += index > 0 ? `,${keyToAdd}` : keyToAdd
+      } else {
+        query += index > 0 ? `,${key}` : key
+      }
+    })
+    return query + '}'
+  }
+  
+  type IsArray<T> = T extends Array<any> ? true : false
+  type IsAny<T> = 0 extends (1 & T) ? true : false;
+  type ExcludeUndefined<T> = T extends undefined ? never : T
 
-function postprocessQuery(query?: any) {
-  if (!query) return query
+  type DotNotationKeys<T, P extends string = ''> = IsAny<T> extends true
+    ? P
+    : T extends object
+    ? IsArray<T> extends true
+      ? P extends ''
+        ? never
+        : P
+      : {
+          [K in keyof T]-?: ExcludeUndefined<K> extends string // Exclude undefined keys
+            ? P extends ''
+              ?
+                  | ExcludeUndefined<K>
+                  | DotNotationKeys<ExcludeUndefined<T[K]>, ExcludeUndefined<K>>
+              :
+                  | `${P}.${ExcludeUndefined<K>}`
+                  | DotNotationKeys<
+                      ExcludeUndefined<T[K]>,
+                      `${P}.${ExcludeUndefined<K>}`
+                    >
+            : never
+        }[keyof T]
+    : P
 
-  const parsedQuery = query
-  if (query.fetchKeys) {
-    function getStringifiedQueryKeys(keys: FetchKeysType) {
-      let query = '{'
-      Object.entries(keys)
-        .forEach(([key, value], index) => {
-          if (typeof value === 'object') {
-            const keyToAdd = `${key}${getStringifiedQueryKeys(value)}`
-            query += index > 0 ? `,${keyToAdd}` : keyToAdd
-          } else {
-            query += index > 0 ? `,${key}` : key
-          }
-      })
-      return query + '}'
+type FetchKeysArray<ResponseModel> = ResponseModel extends (infer DataModel)[]
+  ? DotNotationKeys<DataModel>[]
+  : ResponseModel extends {
+      results?: Array<infer DataModel>
+      count?: number
     }
-
-    parsedQuery.query = getStringifiedQueryKeys(query.fetchKeys)
+  ? DotNotationKeys<DataModel>[]
+  : DotNotationKeys<ResponseModel>[]
+  
+  type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
+    k: infer I
+  ) => void
+    ? I
+    : never
+  
+  type Split<S extends string, D extends string> = string extends S
+    ? string[]
+    : S extends ''
+    ? []
+    : S extends `${infer T}${D}${infer U}`
+    ? [T, ...Split<U, D>]
+    : [S]
+  
+  type PickByPath<T, Path extends any[]> = Path extends [infer P, ...infer Rest]
+    ? P extends keyof T
+      ? { [K in P]: PickByPath<T[P], Rest> }
+      : unknown
+    : T
+  
+  type ObjectWithKeysFromArray<T, Keys extends string[]> = UnionToIntersection<
+    {
+      [K in keyof Keys]: PickByPath<T, Split<Extract<Keys[K], string>, '.'>>
+    }[number]
+  >
+  
+  type Modify<T, R> = Omit<T, keyof R> & R;
+  
+  type PickKeysFromArray<ResponseModel, Keys extends string[]> = never[] extends Keys 
+  ? ResponseModel
+  : ResponseModel extends (infer DataModel)[]
+  ? Merge<ObjectWithKeysFromArray<DataModel, Keys>>[]
+  : ResponseModel extends { results?: Array<infer DataModel>; count?: number }
+  ? Merge<
+      Modify<
+        ResponseModel,
+        { results: ObjectWithKeysFromArray<DataModel, Keys>[] }
+      >
+    >
+  : Merge<ObjectWithKeysFromArray<ResponseModel, Keys>>
+  
+  type Merge<T> = {
+    [K in keyof T]: T[K]
+  }
+  
+  export function validateArrayFetchKeys(paths: string[]) {
+    if (paths.length !== new Set(paths).size)
+      throw new Error(`Duplicate key in fetchKeys:
+  ${JSON.stringify(paths, null, 2)}`)
+    paths.forEach((path, index) =>
+      paths.forEach((otherPath, otherIndex) => {
+        if (otherPath.startsWith(path) && index !== otherIndex)
+          throw new Error(
+            `Invalid duplicate nesting in fetchKeys: ${path} and ${otherPath}`
+          )
+      })
+    )
   }
 
-  delete parsedQuery.fetchKeys
-  return parsedQuery
-}
+  function getFetchKeysFromArray(paths: string[]) {
+    if (process.env.NODE_ENV !== 'production')
+      validateArrayFetchKeys(paths)
+    const fetchKeys: FetchKeysType = {}
+    for (const path of paths) {
+      let currentObject = fetchKeys
+      const nestedFields = path.split('.')
+      for (const nestedField of nestedFields.slice(0, -1)) {
+        if (!currentObject[nestedField]) currentObject[nestedField] = {}
+        currentObject = currentObject[nestedField] as FetchKeysType
+      }
+      currentObject[nestedFields.at(-1) as string] = true
+    }
+    return getStringifiedQueryKeys(fetchKeys)
+  }
+  
+  export type FetchKeys<ResponseModel = unknown> =
+    | FetchKeysObject<ResponseModel>
+    | FetchKeysArray<ResponseModel>
+  export type PickKeys<
+    ResponseModel,
+    KeysToFetch extends FetchKeys<ResponseModel>
+  > = KeysToFetch extends string[]
+    ? PickKeysFromArray<ResponseModel, KeysToFetch>
+    : PickKeysFromObject<ResponseModel, KeysToFetch>
+  
+  function getQuery(fetchKeys: FetchKeys) {
+    return Array.isArray(fetchKeys)
+      ? getFetchKeysFromArray(fetchKeys)
+      : getStringifiedQueryKeys(fetchKeys)
+  }
+  
+  export function postprocessQuery(params?: any) {
+    if (!params) return params
+    if (params.fetchKeys) params.query = getQuery(params.fetchKeys)
+    delete params.fetchKeys
+    return params
+  }  
+  
 
 <% if (config.httpClientType === config.constants.HTTP_CLIENT.AXIOS) { %> import { AxiosRequestConfig, AxiosResponse } from "axios"; <% } %>
 
