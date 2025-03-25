@@ -2,6 +2,7 @@
 import chalk from 'chalk'
 import fs from 'fs'
 import path from 'path'
+import { pathToFileURL } from 'url'
 import { type Config, generateFromConfig } from './generateFromConfig'
 
 async function main() {
@@ -16,7 +17,8 @@ async function main() {
     return
   }
 
-  const config = (await import(CONFIG_PATH)).default as Config
+  const config = (await import(pathToFileURL(CONFIG_PATH).href))
+    .default as Config
 
   if (!config.url) {
     console.log(
