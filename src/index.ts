@@ -20,10 +20,14 @@ async function main() {
   const config = (await import(pathToFileURL(CONFIG_PATH).href))
     .default as Config
 
-  if (!config.url) {
+  const isUrlMissing = Array.isArray(config)
+    ? !config.every(item => item.url)
+    : !config.url
+
+  if (isUrlMissing) {
     console.log(
       chalk.yellow(
-        '"url" property in sparing-open-api.config.js is not defined. Service creation aborted!'
+        '"url" property is not defined. Service creation aborted!'
       )
     )
     return
