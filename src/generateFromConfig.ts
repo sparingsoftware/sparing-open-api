@@ -5,7 +5,7 @@ import fs from 'fs'
 import { default as optimizeTypesUtil } from './optimizeTypes'
 import onCreateRoute from './onCreateRoute'
 
-export type Config = {
+type SingleConfig = {
   /**
    * Http address of JSON OpenAPI schema to your API
    * @required
@@ -54,7 +54,17 @@ export type Config = {
   typeWhitelist?: string[]
 }
 
-export const generateFromConfig = ({
+export type Config = SingleConfig | SingleConfig[]
+
+export const generateFromConfig = (config: Config) => {
+  if (Array.isArray(config))
+    return Promise.all(
+      config?.map(configuration => generateSingleApi(configuration))
+    )
+  return generateSingleApi(config)
+}
+
+const generateSingleApi = ({
   url,
   filePath,
   outDir = './service/',
@@ -63,7 +73,7 @@ export const generateFromConfig = ({
   include = [],
   optimizeTypes = true,
   typeWhitelist = []
-}: Config) => {
+}: SingleConfig) => {
   const OUTPUT_PATH = path.resolve(process.cwd(), outDir)
   const TEMPLATES_PATH = path.resolve(__dirname, '../templates/')
 

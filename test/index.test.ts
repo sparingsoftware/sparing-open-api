@@ -12,7 +12,7 @@ import onCreateRoute from '../src/onCreateRoute'
 
 const GENERATED_DIRECTORY = path.join('test', 'generated')
 
-describe('generates api from config object', () => {
+describe('generates api', () => {
   it('by file path', async () => {
     const GENERATED_FILENAME = '__generated-api.ts'
     const GENERATED_PATH = path.join(GENERATED_DIRECTORY, GENERATED_FILENAME)
@@ -29,6 +29,7 @@ describe('generates api from config object', () => {
     const generated = await fs.readFile(GENERATED_PATH, { encoding: 'utf-8' })
     expect(generated).toMatchSnapshot()
   })
+
   it('by url', async () => {
     const GENERATED_FILENAME = '__generated-api-from-url.ts'
     const GENERATED_PATH = path.join(GENERATED_DIRECTORY, GENERATED_FILENAME)
@@ -48,6 +49,44 @@ describe('generates api from config object', () => {
     expect(generated).toContain('type FetchKeys')
 
     await fs.rm(GENERATED_PATH)
+  })
+
+  it('from array', async () => {
+    const GENERATED_FILENAME_V1 = '__generated-api-from-url-v1.ts'
+    const GENERATED_FILENAME_V2 = '__generated-api-from-url-v2.ts'
+    const GENERATED_PATH_V1 = path.join(
+      GENERATED_DIRECTORY,
+      GENERATED_FILENAME_V1
+    )
+    const GENERATED_PATH_V2 = path.join(
+      GENERATED_DIRECTORY,
+      GENERATED_FILENAME_V2
+    )
+    const TEST_API_URL = 'https://petstore3.swagger.io/api/v3/openapi.json'
+
+    await generateFromConfig([
+      {
+        url: TEST_API_URL,
+        outDir: GENERATED_DIRECTORY,
+        outFilename: GENERATED_FILENAME_V1
+      },
+      {
+        url: TEST_API_URL,
+        outDir: GENERATED_DIRECTORY,
+        outFilename: GENERATED_FILENAME_V2
+      }
+    ])
+
+    await Promise.all([
+      fs
+        .readFile(GENERATED_PATH_V1, { encoding: 'utf-8' })
+        .then(result => expect(result).toContain('type FetchKeys'))
+        .then(() => fs.rm(GENERATED_PATH_V1)),
+      fs
+        .readFile(GENERATED_PATH_V2, { encoding: 'utf-8' })
+        .then(result => expect(result).toContain('type FetchKeys'))
+        .then(() => fs.rm(GENERATED_PATH_V2))
+    ])
   })
 })
 
