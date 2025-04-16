@@ -56,14 +56,13 @@ type SingleConfig = {
 
 export type Config = SingleConfig | SingleConfig[]
 
-export const generateFromConfig = (config: Config) => {
+export const generateFromConfig = async (config: Config) => {
   if (Array.isArray(config))
-    return Promise.all(
-      config?.map(configuration => generateSingleApi(configuration))
-    )
-  return generateSingleApi(config)
+    for (const singleConfig of config) {
+      await generateSingleApi(singleConfig)
+    }
+  else await generateSingleApi(config)
 }
-
 const generateSingleApi = ({
   url,
   filePath,
