@@ -1821,7 +1821,7 @@ export function validateArrayFetchKeys(paths: string[]) {
   \${JSON.stringify(paths, null, 2)}\`)
   paths.forEach((path, index) =>
     paths.forEach((otherPath, otherIndex) => {
-      if (otherPath.startsWith(path) && index !== otherIndex)
+      if (otherPath.startsWith(`\${path}.`) && index !== otherIndex)
         throw new Error(
           \`Invalid duplicate nesting in fetchKeys: \${path} and \${otherPath}\`
         )
@@ -4257,7 +4257,7 @@ export function validateArrayFetchKeys(paths: string[]) {
   \${JSON.stringify(paths, null, 2)}\`)
   paths.forEach((path, index) =>
     paths.forEach((otherPath, otherIndex) => {
-      if (otherPath.startsWith(path) && index !== otherIndex)
+      if (otherPath.startsWith(`\${path}.`) && index !== otherIndex)
         throw new Error(
           \`Invalid duplicate nesting in fetchKeys: \${path} and \${otherPath}\`
         )
@@ -6693,7 +6693,7 @@ export function validateArrayFetchKeys(paths: string[]) {
   \${JSON.stringify(paths, null, 2)}\`)
   paths.forEach((path, index) =>
     paths.forEach((otherPath, otherIndex) => {
-      if (otherPath.startsWith(path) && index !== otherIndex)
+      if (otherPath.startsWith(`\${path}.`) && index !== otherIndex)
         throw new Error(
           \`Invalid duplicate nesting in fetchKeys: \${path} and \${otherPath}\`
         )

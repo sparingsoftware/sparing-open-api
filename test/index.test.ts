@@ -150,6 +150,12 @@ describe('postprocessQuery', () => {
       })
       expect(parsedQuery?.query).toEqual('{key1{key2,key3}}')
     })
+    it('allows keys with shared prefixes', () => {
+      const parsedQuery = postprocessQuery({
+        fetchKeys: ['student', 'student_str']
+      })
+      expect(parsedQuery?.query).toEqual('{student,student_str}')
+    })
     it('throws when there are duplicate keys', () => {
       expect(() => {
         postprocessQuery({ fetchKeys: ['key1', 'key1'] })
