@@ -5,6 +5,8 @@ import path from 'path'
 import { pathToFileURL } from 'url'
 import { type Config, generateFromConfig } from './generateFromConfig'
 
+export type { Config } from './generateFromConfig'
+
 async function main() {
   const CONFIG_PATH = path.resolve(process.cwd(), 'sparing-open-api.config.js')
 
