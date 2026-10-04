@@ -6,7 +6,8 @@ import {
   PickKeys,
   FetchKeys,
   postprocessQuery,
-  Api
+  Api,
+  PaginatedPublicArticleList
 } from './generated/__generated-api'
 import onCreateRoute from '../src/onCreateRoute'
 
@@ -392,5 +393,15 @@ describe('API class', () => {
         author: { id: string }
       }[]
     }>()
+  })
+
+  it('infers array fetchKeys parameter type as const', () => {
+    const testFn = <T extends FetchKeys<PaginatedPublicArticleList>>(
+      fetchKeys: T
+    ) => fetchKeys
+
+    const returnedFetchKeys = testFn(['author'])
+    // check if array fetchKeys are inferred as ["key"], not "key"[] when passed into a function
+    expectTypeOf(returnedFetchKeys).toEqualTypeOf<['author']>()
   })
 })
